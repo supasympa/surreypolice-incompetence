@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Press Pack — Police Bias in 2026 — Design 3: The Hearing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F5F0;
+  --card:#FFFFFF;
+  --ink:#23211C;
+  --muted:#6F6A5E;
+  --accent:#2E5E4E;
+  --oxblood:#7A3B34;
+  --hair:#E3DFD5;
+  --r:14px;
+  --shadow:0 1px 2px rgba(35,33,28,.06),0 6px 18px rgba(35,33,28,.08);
+  --shadow-lg:0 2px 4px rgba(35,33,28,.08),0 16px 40px rgba(35,33,28,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'EB Garamond',Georgia,serif;font-weight:600;line-height:1.15}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+.container{max-width:760px;margin:0 auto;padding:0 24px}
+.pin{width:10px;height:10px;border-radius:50%;background:var(--oxblood);box-shadow:0 1px 2px rgba(0,0,0,.3);display:inline-block}
+
+nav.topnav{position:sticky;top:0;z-index:100;background:rgba(246,245,240,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--hair)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;max-width:1080px;margin:0 auto;padding:14px 24px;gap:16px}
+.wordmark{font-family:'EB Garamond',serif;font-size:20px;font-weight:600;color:var(--ink);letter-spacing:-.01em;white-space:nowrap}
+.wordmark .seal{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border:1.5px solid var(--accent);border-radius:50%;margin-right:8px;vertical-align:-4px;position:relative}
+.wordmark .seal::after{content:'';position:absolute;inset:3px;border:1px solid var(--accent);border-radius:50%}
+.nav-links{display:flex;gap:22px;list-style:none;font-size:14px;font-weight:500}
+.nav-links a{color:var(--ink)}
+.nav-links a:hover{color:var(--accent);text-decoration:none}
+@media(max-width:640px){.nav-links{display:none}}
+
+.hero-card{background:var(--card);border:1px solid var(--hair);border-radius:var(--r);box-shadow:var(--shadow-lg);padding:40px 44px;margin:40px 0 24px;position:relative;transform:rotate(-.8deg)}
+.hero-card .pin-top{position:absolute;top:-5px;left:50%;transform:translateX(-50%)}
+.hero-kicker{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--oxblood);margin-bottom:12px}
+.hero-card h1{font-size:clamp(28px,5vw,40px);font-weight:700;letter-spacing:-.02em}
+.hero-card h1 em{font-style:italic;color:var(--accent)}
+@media(max-width:640px){.hero-card{padding:28px 22px;transform:rotate(0)}}
+
+.banner{background:var(--oxblood);color:#fff;border-radius:var(--r);padding:16px 24px;margin:24px 0;font-size:15px;font-weight:500;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:var(--shadow)}
+.banner .tag{background:rgba(255,255,255,.18);padding:3px 10px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.banner a{color:#fff;text-decoration:underline;font-weight:600}
+
+.section-card{background:var(--card);border:1px solid var(--hair);border-radius:var(--r);box-shadow:var(--shadow);padding:36px;margin:20px 0;position:relative}
+@media(max-width:640px){.section-card{padding:26px 22px}}
+.section-card .pin-top{position:absolute;top:-5px;left:50%;transform:translateX(-50%)}
+.sec-kicker{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--oxblood);margin-bottom:8px}
+.sec-title{font-size:clamp(22px,4vw,30px);font-weight:600;margin-bottom:18px;letter-spacing:-.01em}
+.sec-title em{font-style:italic;color:var(--accent)}
+
+.text-block p{font-size:16px;line-height:1.7;color:var(--ink)}
+.text-block p em{font-style:italic;color:var(--accent)}
+
+.form-wrap{max-width:520px;margin:0 auto}
+.form-field{margin-bottom:16px}
+.form-field label{display:block;font-size:14px;font-weight:600;margin-bottom:6px;color:var(--ink)}
+.form-field input,.form-field textarea{width:100%;padding:11px 14px;border:1.5px solid var(--hair);border-radius:10px;font-size:15px;font-family:'Instrument Sans',sans-serif;background:#fff;color:var(--ink)}
+.form-field input:focus,.form-field textarea:focus{outline:none;border-color:var(--accent)}
+.form-field textarea{min-height:90px;resize:vertical}
+.btn{display:inline-block;padding:12px 24px;border-radius:10px;font-size:15px;font-weight:600;font-family:'Instrument Sans',sans-serif;cursor:pointer;border:none;transition:transform .15s}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(46,94,78,.25)}
+.btn-primary:hover{background:#265243;transform:translateY(-1px);text-decoration:none}
+.form-wrap .btn{width:100%;text-align:center}
+
+.faq-list{display:flex;flex-direction:column;gap:12px}
+.faq-item{border:1px solid var(--hair);border-radius:12px;padding:18px 22px;background:#FDFCF8}
+.faq-item h4{font-size:17px;margin-bottom:6px}
+.faq-item h4 em{font-style:italic;color:var(--accent)}
+.faq-item p{font-size:14px;color:var(--muted);line-height:1.55}
+
+.footer-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+@media(max-width:768px){.footer-cols{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.footer-cols{grid-template-columns:1fr}}
+.footer-col h4{font-size:14px;font-weight:700;margin-bottom:10px;color:var(--ink)}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:6px}
+.footer-col a{font-size:13px;color:var(--muted)}
+.footer-col a:hover{color:var(--accent)}
+
+footer.site-footer{background:var(--ink);color:#D5D0C5;padding:36px 0 24px;margin-top:32px}
+.footer-top{border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:24px;margin-bottom:20px;max-width:1080px;margin-left:auto;margin-right:auto;padding-left:24px;padding-right:24px}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:13px;max-width:1080px;margin:0 auto;padding:0 24px}
+.footer-bottom .wordmark{color:#fff;font-size:18px}
+.footer-bottom .wordmark .seal{border-color:#fff}
+.footer-bottom .wordmark .seal::after{border-color:#fff}
+.gen-line{font-size:13px;color:#9C968A}
+.gen-line a{color:#D5D0C5;text-decoration:underline}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="nav-inner">
+    <a href="design3.html" class="wordmark"><span class="seal"></span>Police Bias in 2026</a>
+    <ul class="nav-links">
+      <li><a href="design3.html#record">The Record</a></li>
+      <li><a href="design3.html#evidence">Evidence</a></li>
+      <li><a href="design3-tertiary.html">Press</a></li>
+      <li><a href="design3.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+<div class="container">
+
+<!-- HERO -->
+<section data-block="hero" class="hero-card">
+  <span class="pin pin-top"></span>
+  <div class="hero-kicker">For Journalists</div>
+  <h1>The <em>Press Pack</em></h1>
+</section>
+
+<!-- BANNER -->
+<section data-block="banner" class="banner">
+  <span class="tag">Ready</span>
+  <span>Downloadable evidence bundle: timelines, documents, contacts.</span>
+  <a href="#request">Request it &rarr;</a>
+</section>
+
+<!-- TEXT -->
+<section data-block="text" class="section-card">
+  <span class="pin pin-top"></span>
+  <div class="sec-kicker">Press Pack</div>
+  <h2 class="sec-title">Everything a journalist <em>needs</em></h2>
+  <div class="text-block">
+    <p>The Press Pack bundles the full evidence base into a single downloadable package: a case timeline, every published document, the HMICFRS and IOPC correspondence, and verified contacts for the press desk. <em>No spin, no commentary &mdash; just the record.</em></p>
+  </div>
+</section>
+
+<!-- FORM -->
+<section data-block="form" class="section-card" id="request">
+  <span class="pin pin-top"></span>
+  <div class="sec-kicker">Request</div>
+  <h2 class="sec-title">Request the <em>press pack</em></h2>
+  <div class="form-wrap">
+    <form action="#" method="post">
+      <div class="form-field"><label for="pp-name">Name</label><input type="text" id="pp-name" name="name" placeholder="Your name"></div>
+      <div class="form-field"><label for="pp-email">Email</label><input type="email" id="pp-email" name="email" placeholder="you@example.com"></div>
+      <div class="form-field"><label for="pp-outlet">Outlet / publication</label><input type="text" id="pp-outlet" name="outlet" placeholder="Publication or freelance"></div>
+      <div class="form-field"><label for="pp-msg">Message (optional)</label><textarea id="pp-msg" name="message" placeholder="What do you need?"></textarea></div>
+      <button type="submit" class="btn btn-primary">Send to the press desk</button>
+    </form>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section data-block="faq" class="section-card">
+  <span class="pin pin-top"></span>
+  <div class="sec-kicker">Questions</div>
+  <h2 class="sec-title">Press <em>FAQ</em></h2>
+  <div class="faq-list">
+    <div class="faq-item"><h4>What&rsquo;s in the <em>pack?</em></h4><p>A case timeline, all published documents, HMICFRS and IOPC correspondence, and verified press desk contacts &mdash; bundled for download.</p></div>
+    <div class="faq-item"><h4>Can I publish from <em>it?</em></h4><p>Yes. Every document in the pack is one we are lawfully entitled to publish. Cite the source on each.</p></div>
+  </div>
+</section>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="footer-cols" data-block="columns">
+      <div class="footer-col">
+        <h4>The Record</h4>
+        <ul><li><a href="design3.html">About</a></li><li><a href="design3.html#record">Timeline</a></li><li><a href="design3.html#evidence">Documents</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Accountability</h4>
+        <ul><li><a href="#">HMICFRS reports</a></li><li><a href="#">IOPC</a></li><li><a href="#">FOI log</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Press</h4>
+        <ul><li><a href="design3-tertiary.html">Press pack</a></li><li><a href="design3.html#contact">Enquiries</a></li><li><a href="#">Corrections</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul><li><a href="#">Privacy</a></li><li><a href="#">Complaints policy</a></li><li><a href="#">Sources &amp; methodology</a></li></ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="wordmark"><span class="seal"></span>Police Bias in 2026</span>
+    <span class="gen-line">Design 3 of 4 &middot; <a href="index.html">All designs</a> &middot; Generated with Odokai</span>
+  </div>
+</footer>
+
+</body>
+</html>

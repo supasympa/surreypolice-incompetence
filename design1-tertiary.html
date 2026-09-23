@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Press Pack — Police Bias in 2026 — Design 1: Declassified</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --manila:#F1E9D8;--ink:#1E1B16;--stamp:#B3261E;
+    --faint:#6E6656;--hair:#D8CCB4;--manila-dark:#E7DCC4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--manila);color:var(--ink);font-family:'Newsreader',Georgia,serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .container{max-width:760px;margin:0 auto;padding:0 24px;}
+  a{color:var(--stamp);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  nav.top{position:sticky;top:0;z-index:50;background:var(--manila);border-bottom:1px solid var(--hair);}
+  nav.top .container{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;gap:16px;flex-wrap:wrap;}
+  .wordmark{font-family:'Courier Prime',monospace;font-weight:700;font-size:14px;letter-spacing:.04em;background:var(--ink);color:var(--manila);padding:8px 18px 8px 12px;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%);text-transform:uppercase;white-space:nowrap;}
+  .nav-links{display:flex;gap:22px;list-style:none;flex-wrap:wrap;}
+  .nav-links a{font-family:'Courier Prime',monospace;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);}
+  .nav-links a:hover{color:var(--stamp);text-decoration:none;border-bottom:2px solid var(--stamp);}
+  .file-tab{display:inline-block;font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--manila);padding:6px 22px 6px 14px;clip-path:polygon(0 0,100% 0,calc(100% - 12px) 100%,0 100%);}
+  .kicker{font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--stamp);font-weight:700;}
+  .stamp{display:inline-block;font-family:'Courier Prime',monospace;font-weight:700;font-size:16px;letter-spacing:.12em;color:var(--stamp);border:3px double var(--stamp);padding:7px 16px;transform:rotate(-7deg);text-transform:uppercase;opacity:.92;}
+  section{padding:36px 0;}
+  section + section{border-top:2px dashed var(--hair);}
+  .banner{background:var(--ink);color:var(--manila);padding:16px 0;}
+  .banner .container{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .banner .tag{font-family:'Courier Prime',monospace;font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;background:var(--stamp);color:var(--manila);padding:4px 10px;}
+  .banner p{font-size:15px;}
+  .banner a{color:var(--manila);text-decoration:underline;}
+  .hero{padding:40px 0 32px;border-top:none;}
+  .hero h1{font-family:'Newsreader',serif;font-weight:700;font-size:clamp(30px,5vw,44px);line-height:1.1;margin:16px 0 14px;letter-spacing:-.01em;}
+  .hero .sub{font-size:18px;line-height:1.5;color:var(--faint);max-width:600px;}
+  .section-head{margin-bottom:22px;}
+  .section-head h2{font-family:'Newsreader',serif;font-weight:600;font-size:26px;line-height:1.2;margin-top:6px;}
+  .text-body p{font-size:18px;line-height:1.6;}
+  form.dossier{display:grid;gap:16px;max-width:520px;}
+  form.dossier label{font-family:'Courier Prime',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);}
+  form.dossier input,form.dossier textarea{font-family:'Newsreader',serif;font-size:16px;border:1px solid var(--ink);background:var(--manila);padding:11px 13px;width:100%;}
+  form.dossier textarea{min-height:90px;resize:vertical;}
+  .btn{font-family:'Courier Prime',monospace;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;padding:13px 24px;border:2px solid var(--ink);background:var(--ink);color:var(--manila);cursor:pointer;display:inline-block;}
+  .btn:hover{text-decoration:none;background:var(--stamp);border-color:var(--stamp);}
+  .faq-item{border-bottom:1px solid var(--hair);padding:16px 0;}
+  .faq-item:last-child{border-bottom:none;}
+  .faq-item h4{font-family:'Newsreader',serif;font-weight:600;font-size:18px;margin-bottom:6px;}
+  .faq-item p{font-size:16px;color:var(--faint);}
+  footer.site{border-top:2px dashed var(--hair);padding:36px 0 24px;}
+  .col-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:24px;}
+  .col-grid h5{font-family:'Courier Prime',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--stamp);margin-bottom:10px;}
+  .col-grid ul{list-style:none;}
+  .col-grid li{font-size:15px;padding:3px 0;}
+  .col-grid a{color:var(--ink);}
+  .foot-meta{font-family:'Courier Prime',monospace;font-size:12px;color:var(--faint);border-top:1px solid var(--hair);padding-top:18px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  @media(max-width:480px){.col-grid{grid-template-columns:1fr;}body{font-size:16px;}}
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="container">
+    <a href="design1.html" class="wordmark">Police Bias in 2026</a>
+    <ul class="nav-links">
+      <li><a href="design1.html">The Record</a></li>
+      <li><a href="design1.html#evidence">Evidence</a></li>
+      <li><a href="design1-tertiary.html">Press</a></li>
+      <li><a href="design1.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="banner" data-block="banner">
+  <div class="container">
+    <span class="tag">For press</span>
+    <p>Downloadable evidence bundle for journalists: timelines, documents, contacts. <a href="#request">Request the pack.</a></p>
+  </div>
+</div>
+
+<section class="hero" data-block="hero">
+  <div class="container">
+    <span class="file-tab">FILE: PRESS PACK</span>
+    <div class="stamp" style="margin:16px 0;">For press</div>
+    <p class="kicker" style="margin-top:12px;">PRESS PACK — SURREY POLICE</p>
+    <h1>Everything a journalist needs, in one file.</h1>
+    <p class="sub">The Press Pack is a downloadable evidence bundle: the full timeline, every published document, contacts for the press desk, and a corrections channel. Free, always.</p>
+  </div>
+</section>
+
+<section data-block="text">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">About this pack</p>
+      <h2>What's inside.</h2>
+    </div>
+    <div class="text-body">
+      <p>The Press Pack contains the full case chronology, all HMICFRS, IOPC and FOI documents cited on this site, a sourced timeline of the four failures, and direct contacts for the press desk. Every claim in the pack is sourced to a public record. Request it below and we'll send the bundle to your newsdesk.</p>
+    </div>
+  </div>
+</section>
+
+<section data-block="form" id="request">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Request</p>
+      <h2>Request the press pack.</h2>
+    </div>
+    <form class="dossier" action="#" method="post">
+      <div><label for="p-name">Name</label><input id="p-name" name="name" type="text" placeholder="Your name"></div>
+      <div><label for="p-email">Email</label><input id="p-email" name="email" type="email" placeholder="you@newsdesk.co.uk"></div>
+      <div><label for="p-outlet">Outlet</label><input id="p-outlet" name="outlet" type="text" placeholder="Publication / broadcaster"></div>
+      <div><label for="p-msg">Message</label><textarea id="p-msg" name="message" placeholder="What do you need?"></textarea></div>
+      <div><button type="submit" class="btn">Send to the press desk</button></div>
+    </form>
+  </div>
+</section>
+
+<section data-block="faq">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Press FAQ</p>
+      <h2>Quick answers.</h2>
+    </div>
+    <div class="faq-item"><h4>Are the documents real?</h4><p>Yes — FOI responses, HMICFRS reports, IOPC correspondence and court records, published in full.</p></div>
+    <div class="faq-item"><h4>Who can I contact for comment?</h4><p>The press desk responds to accredited journalists and public enquiries. Use the form above or the contact details in the pack.</p></div>
+  </div>
+</section>
+
+<footer class="site" data-block="columns">
+  <div class="container">
+    <div class="col-grid">
+      <div>
+        <h5>The Record</h5>
+        <ul><li><a href="design1.html">About</a></li><li><a href="design1.html#evidence">Timeline</a></li><li><a href="design1.html#evidence">Documents</a></li></ul>
+      </div>
+      <div>
+        <h5>Accountability</h5>
+        <ul><li><a href="design1.html">HMICFRS reports</a></li><li><a href="design1.html">IOPC</a></li><li><a href="design1.html">FOI log</a></li></ul>
+      </div>
+      <div>
+        <h5>Press</h5>
+        <ul><li><a href="design1-tertiary.html">Press pack</a></li><li><a href="design1.html#contact">Enquiries</a></li><li><a href="design1.html">Corrections</a></li></ul>
+      </div>
+      <div>
+        <h5>Legal</h5>
+        <ul><li><a href="design1.html">Privacy</a></li><li><a href="design1.html">Complaints policy</a></li><li><a href="design1.html">Sources &amp; methodology</a></li></ul>
+      </div>
+    </div>
+    <div class="foot-meta">
+      <span>Police Bias in 2026 · Design 1 of 4 · <a href="index.html">All designs</a></span>
+      <span>Generated with Odokai</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

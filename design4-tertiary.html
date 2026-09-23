@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Press Pack — Police Bias in 2026 — Design 4: The Count</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#22262C; --panel:#2A2F37;
+    --text:#E9ECEF; --muted:#9AA3AD; --accent:#E8762C; --green:#7FB069;
+    --line:#3A404A;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  img{max-width:100%;display:block}
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px}
+
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(34,38,44,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav-inner{max-width:880px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .wordmark{font-family:var(--mono);font-weight:700;font-size:14px;letter-spacing:.04em;color:var(--text);display:flex;align-items:center;gap:10px}
+  .wordmark .dot{width:8px;height:8px;background:var(--accent);display:inline-block}
+  .nav-links{display:flex;gap:22px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+  .nav-links a{color:var(--muted)}
+  .nav-links a:hover{color:var(--text);text-decoration:none}
+
+  .banner{background:var(--accent);color:#1a1208;padding:12px 0}
+  .banner-inner{max-width:880px;margin:0 auto;padding:0 24px;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.04em}
+  .banner-inner a{color:#1a1208;text-decoration:underline}
+
+  .barcode{height:10px;background:repeating-linear-gradient(90deg,var(--text) 0 2px,transparent 2px 4px,var(--text) 4px 5px,transparent 5px 9px,var(--text) 9px 11px,transparent 11px 14px);opacity:.5;margin-bottom:16px}
+
+  .chip{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);padding:5px 10px;color:var(--muted);border-radius:3px}
+  .chip.orange{border-color:var(--accent);color:var(--accent)}
+
+  .kicker{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+
+  .hero{padding:48px 0 36px}
+  .hero h1{font-family:var(--sans);font-weight:900;font-size:clamp(32px,5.5vw,56px);line-height:.95;letter-spacing:-.03em;margin-bottom:16px}
+  .hero .sub{font-size:17px;color:var(--muted);max-width:600px;line-height:1.5}
+
+  .block{padding:36px 0;border-top:1px solid var(--line)}
+  .block:first-of-type{border-top:0}
+
+  h2.sec{font-family:var(--sans);font-weight:800;font-size:clamp(22px,3.5vw,32px);line-height:1.1;letter-spacing:-.02em;margin-bottom:12px}
+  .sec-sub{color:var(--muted);font-size:15px;max-width:600px;margin-bottom:24px}
+
+  .body-text{font-size:16px;line-height:1.65;color:var(--text);max-width:640px}
+
+  label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+  input,textarea{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--text);font-family:var(--sans);font-size:15px;padding:11px 14px;border-radius:4px}
+  input:focus,textarea:focus{outline:none;border-color:var(--accent)}
+  textarea{min-height:90px;resize:vertical}
+  .form-row{margin-bottom:16px}
+
+  .btn{font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:13px 22px;border-radius:4px;border:1px solid var(--accent);cursor:pointer;transition:.15s;display:inline-block}
+  .btn.primary{background:var(--accent);color:#1a1208}
+  .btn.primary:hover{background:#f08540;text-decoration:none}
+
+  .faq-item{padding:18px 0;border-bottom:1px solid var(--line)}
+  .faq-item:first-child{border-top:1px solid var(--line)}
+  .faq-item .fq{font-family:var(--sans);font-weight:600;font-size:16px;margin-bottom:6px;display:flex;gap:10px}
+  .faq-item .fq .qnum{font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600;flex-shrink:0;padding-top:3px}
+  .faq-item .fa{color:var(--muted);font-size:14px;line-height:1.6;padding-left:28px}
+
+  .cols{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .col h4{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+  .col ul{list-style:none}
+  .col li{margin-bottom:7px}
+  .col a{color:var(--muted);font-size:13px}
+  .col a:hover{color:var(--text);text-decoration:none}
+
+  footer.site{border-top:1px solid var(--line);padding:36px 0 28px;margin-top:24px}
+  .foot-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+  .foot-inner .wm{font-family:var(--mono);font-size:13px;color:var(--muted)}
+  .foot-inner .wm b{color:var(--text)}
+  .foot-meta{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em}
+  .foot-meta a{color:var(--muted)}
+  .gen{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px;width:100%}
+
+  @media(max-width:600px){
+    .cols{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:400px){
+    .cols{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="design4.html" class="wordmark"><span class="dot"></span>Police Bias in 2026</a>
+    <nav class="nav-links">
+      <a href="design4.html">The Record</a>
+      <a href="design4.html#evidence">Evidence</a>
+      <a href="design4-tertiary.html">Press</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- BANNER -->
+<div class="banner" data-block="banner">
+  <div class="banner-inner">PRESS PACK &mdash; Downloadable evidence bundle now available. <a href="#request">Request it below.</a></div>
+</div>
+
+<main>
+
+<!-- HERO -->
+<section class="hero wrap" data-block="hero">
+  <div class="barcode"></div>
+  <div class="kicker">FOR JOURNALISTS &amp; EDITORS</div>
+  <h1>Press Pack</h1>
+  <p class="sub">A downloadable evidence bundle: timelines, documents, contacts. Everything a newsdesk needs to verify and report this story.</p>
+</section>
+
+<!-- TEXT -->
+<section class="block wrap" data-block="text">
+  <span class="chip orange">UTILITY</span>
+  <div class="body-text" style="margin-top:18px">
+    <p>The Press Pack contains the full case chronology, every published document with source citations, a ready-to-use timeline, and direct contacts for the press desk and legal support. It is free, and it is updated whenever the record changes.</p>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="block wrap" data-block="form" id="request">
+  <div class="barcode" style="height:8px"></div>
+  <h2 class="sec">Request the press pack</h2>
+  <p class="sec-sub">Tell us where to send it. We will not add you to any list.</p>
+  <form onsubmit="return false">
+    <div class="form-row">
+      <label for="pp-name">Name</label>
+      <input id="pp-name" type="text" placeholder="Your name">
+    </div>
+    <div class="form-row">
+      <label for="pp-email">Email</label>
+      <input id="pp-email" type="email" placeholder="you@newsdesk.co.uk">
+    </div>
+    <div class="form-row">
+      <label for="pp-outlet">Outlet / publication</label>
+      <input id="pp-outlet" type="text" placeholder="Newsdesk or freelance">
+    </div>
+    <button type="submit" class="btn primary">Request the press pack</button>
+  </form>
+</section>
+
+<!-- FAQ -->
+<section class="block wrap" data-block="faq">
+  <div class="barcode" style="height:8px"></div>
+  <h2 class="sec">Press FAQ</h2>
+  <div class="faq-item">
+    <div class="fq"><span class="qnum">Q.01</span> What is in the press pack?</div>
+    <div class="fa">The full case chronology, every published document with source citations, a ready-to-use timeline, and direct contacts for the press desk and legal support.</div>
+  </div>
+  <div class="faq-item">
+    <div class="fq"><span class="qnum">Q.02</span> Can I verify the documents independently?</div>
+    <div class="fa">Yes. Every document is sourced to a public body &mdash; HMICFRS, IOPC, the courts, or FOI responses &mdash; and the source is named alongside each item.</div>
+  </div>
+</section>
+
+<!-- COLUMNS -->
+<section class="block wrap" data-block="columns" id="contact">
+  <div class="cols">
+    <div class="col">
+      <h4>The Record</h4>
+      <ul>
+        <li><a href="design4.html">About</a></li>
+        <li><a href="design4-secondary.html">Timeline</a></li>
+        <li><a href="design4.html#evidence">Documents</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Accountability</h4>
+      <ul>
+        <li><a href="#">HMICFRS reports</a></li>
+        <li><a href="#">IOPC</a></li>
+        <li><a href="#">FOI log</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Press</h4>
+      <ul>
+        <li><a href="#request">Press pack</a></li>
+        <li><a href="#">Enquiries</a></li>
+        <li><a href="#">Corrections</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Complaints policy</a></li>
+        <li><a href="#">Sources &amp; methodology</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-inner">
+      <div class="wm"><b>Police Bias in 2026</b> &middot; The Count</div>
+      <div class="foot-meta">Design 4 of 4 &middot; <a href="index.html">All designs</a></div>
+      <div class="gen">Generated with Odokai</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

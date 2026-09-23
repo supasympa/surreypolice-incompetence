@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>The Safeguarding Record — Police Bias in 2026 — Design 1: Declassified</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --manila:#F1E9D8;--ink:#1E1B16;--stamp:#B3261E;
+    --faint:#6E6656;--hair:#D8CCB4;--manila-dark:#E7DCC4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--manila);color:var(--ink);font-family:'Newsreader',Georgia,serif;font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .container{max-width:820px;margin:0 auto;padding:0 24px;}
+  a{color:var(--stamp);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  nav.top{position:sticky;top:0;z-index:50;background:var(--manila);border-bottom:1px solid var(--hair);}
+  nav.top .container{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;gap:16px;flex-wrap:wrap;}
+  .wordmark{font-family:'Courier Prime',monospace;font-weight:700;font-size:14px;letter-spacing:.04em;background:var(--ink);color:var(--manila);padding:8px 18px 8px 12px;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%);text-transform:uppercase;white-space:nowrap;}
+  .nav-links{display:flex;gap:22px;list-style:none;flex-wrap:wrap;}
+  .nav-links a{font-family:'Courier Prime',monospace;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);}
+  .nav-links a:hover{color:var(--stamp);text-decoration:none;border-bottom:2px solid var(--stamp);}
+  .file-tab{display:inline-block;font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--manila);padding:6px 22px 6px 14px;clip-path:polygon(0 0,100% 0,calc(100% - 12px) 100%,0 100%);}
+  .kicker{font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--stamp);font-weight:700;}
+  .redact{background:var(--ink);color:var(--ink);padding:0 .15em;display:inline-block;line-height:1;box-shadow:0 1px 0 rgba(0,0,0,.15);}
+  .stamp{display:inline-block;font-family:'Courier Prime',monospace;font-weight:700;font-size:18px;letter-spacing:.12em;color:var(--stamp);border:3px double var(--stamp);padding:8px 18px;transform:rotate(-7deg);text-transform:uppercase;opacity:.92;}
+  hr[data-block="divider"]{border:none;border-top:2px dashed var(--hair);margin:40px 0;}
+  section{padding:48px 0;}
+  section + section{border-top:2px dashed var(--hair);}
+  .section-head{margin-bottom:28px;}
+  .section-head h2{font-family:'Newsreader',serif;font-weight:600;font-size:30px;line-height:1.2;margin-top:6px;}
+  .hero{padding:48px 0 40px;border-top:none;}
+  .hero h1{font-family:'Newsreader',serif;font-weight:700;font-size:clamp(34px,6vw,54px);line-height:1.08;margin:18px 0 22px;letter-spacing:-.01em;}
+  .hero .sub{font-size:19px;line-height:1.55;max-width:640px;color:var(--faint);}
+  .article-body p{font-size:19px;line-height:1.65;margin-bottom:20px;}
+  .article-body p:first-letter{font-family:'Newsreader',serif;font-weight:700;font-size:52px;float:left;line-height:.9;padding:6px 10px 0 0;color:var(--stamp);}
+  .figure img{width:100%;display:block;border:1px solid var(--hair);}
+  .figure figcaption{font-family:'Courier Prime',monospace;font-size:13px;color:var(--faint);padding:12px 0;border-bottom:1px solid var(--hair);}
+  .pullquote{text-align:center;padding:16px 0;}
+  .pullquote blockquote{font-family:'Newsreader',serif;font-style:italic;font-weight:500;font-size:28px;line-height:1.3;max-width:640px;margin:0 auto;}
+  .pullquote cite{display:block;font-family:'Courier Prime',monospace;font-size:13px;color:var(--faint);margin-top:14px;font-style:normal;text-transform:uppercase;letter-spacing:.06em;}
+  .chrono{font-family:'Courier Prime',monospace;font-size:15px;line-height:2;white-space:pre-wrap;background:var(--manila-dark);border:1px solid var(--hair);padding:24px 28px;}
+  .chrono .yr{color:var(--stamp);font-weight:700;}
+  .cta-block{text-align:center;padding:48px 0;}
+  .cta-block h2{font-family:'Newsreader',serif;font-weight:700;font-size:36px;line-height:1.15;}
+  .cta-block p{font-size:18px;color:var(--faint);margin:12px 0 24px;}
+  .btn{font-family:'Courier Prime',monospace;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;padding:14px 26px;border:2px solid var(--ink);background:var(--ink);color:var(--manila);cursor:pointer;display:inline-block;}
+  .btn:hover{text-decoration:none;background:var(--stamp);border-color:var(--stamp);}
+  .btn.secondary{background:transparent;color:var(--ink);}
+  .btn.secondary:hover{background:var(--ink);color:var(--manila);}
+  .article-nav{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:24px 0 0;}
+  .article-nav a{font-family:'Courier Prime',monospace;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink);}
+  footer.site{border-top:2px dashed var(--hair);padding:40px 0 28px;}
+  .foot-meta{font-family:'Courier Prime',monospace;font-size:12px;color:var(--faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  @media(max-width:480px){body{font-size:17px;}.hero h1{font-size:32px;}.article-body p:first-letter{font-size:44px;}}
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="container">
+    <a href="design1.html" class="wordmark">Police Bias in 2026</a>
+    <ul class="nav-links">
+      <li><a href="design1.html">The Record</a></li>
+      <li><a href="design1.html#evidence">Evidence</a></li>
+      <li><a href="design1-tertiary.html">Press</a></li>
+      <li><a href="design1.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero" data-block="hero">
+  <div class="container">
+    <span class="file-tab">FILE: SURREY POLICE — SAFEGUARDING</span>
+    <div class="stamp" style="margin:18px 0;">Case file</div>
+    <p class="kicker" style="margin-top:14px;">PUBLIC DISCLOSURE — SURREY POLICE</p>
+    <h1>The children the <span class="redact">system</span> missed.</h1>
+    <p class="sub">A documented account of how Surrey Police handled child protection referrals — and what the inspection record says went wrong.</p>
+  </div>
+</section>
+
+<section data-block="text">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Article · 01</p>
+      <h2>The safeguarding record.</h2>
+    </div>
+    <div class="article-body">
+      <p>The documented record shows referrals that went nowhere. Child protection concerns were raised, logged, and then allowed to drift — no recorded action, no follow-up, no closure. What the HMICFRS inspection findings describe is not a single oversight but a pattern: a force that received information about children at risk and could not demonstrate it acted on it.</p>
+      <p>This is not anecdote. It is what the inspection reports say, what the FOI responses confirm, and what the complaint trail could not answer. The children the system missed are not names in this record — they are absences, gaps where action should have been recorded and was not.</p>
+      <p>Surrey Police's own correspondence, published here in full, acknowledges the shortfall. What it does not do is explain why, for eighteen months, a person could be left under investigation with no conditions, no review and no protection — while referrals about children sat in the same system, unactioned.</p>
+    </div>
+  </div>
+</section>
+
+<section data-block="image">
+  <div class="container">
+    <figure class="figure">
+      <img src="images/playground.jpg" alt="An empty playground, representing the children the safeguarding system missed.">
+      <figcaption>The children the system missed.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section data-block="quote">
+  <div class="container">
+    <div class="pullquote">
+      <blockquote>"The absence of recorded action is itself a record."</blockquote>
+      <cite>— From the case file</cite>
+    </div>
+  </div>
+</section>
+
+<section data-block="markdown">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Case chronology</p>
+      <h2>The safeguarding timeline.</h2>
+    </div>
+    <div class="chrono"><span class="yr">2024-03</span> — Referral made. No action recorded.
+<span class="yr">2024-06</span> — RUI imposed. No conditions, no review date.
+<span class="yr">2025-01</span> — HMICFRS inspection findings published.
+<span class="yr">2025-09</span> — Complaint closed, unresolved.
+<span class="yr">2026</span> — The record goes public.</div>
+  </div>
+</section>
+
+<section data-block="cta">
+  <div class="container">
+    <div class="cta-block">
+      <span class="stamp" style="margin-bottom:16px;font-size:14px;">Read on</span>
+      <h2>The record belongs to the public.</h2>
+      <p>Read the full evidence, then make up your own mind.</p>
+      <a href="design1.html#evidence" class="btn">Start with the timeline</a>
+    </div>
+  </div>
+</section>
+
+<hr data-block="divider">
+
+<footer class="site">
+  <div class="container">
+    <div class="article-nav">
+      <a href="design1.html">← Back to the record</a>
+      <a href="design1-tertiary.html">Press pack →</a>
+    </div>
+    <div class="foot-meta" style="margin-top:20px;border-top:1px solid var(--hair);padding-top:20px;">
+      <span>Police Bias in 2026 · Design 1 of 4 · <a href="index.html">All designs</a></span>
+      <span>Generated with Odokai</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

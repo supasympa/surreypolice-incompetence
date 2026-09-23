@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Police Bias in 2026 — Design 2: Night Watch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0C1220;
+    --panel:#131B2E;
+    --ink:#E8EDF5;
+    --muted:#8FA0BC;
+    --yellow:#F2B824;
+    --blue:#4C7DB8;
+    --hair:rgba(232,237,245,.14);
+    --font-d:'Big Shoulders Display',sans-serif;
+    --font-b:'Public Sans',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-b);
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%;height:auto}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(12,18,32,.92);
+    border-bottom:1px solid var(--hair);
+    backdrop-filter:blur(8px);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1180px;margin:0 auto;padding:0 24px}
+  .wordmark{font-family:var(--font-d);font-weight:800;text-transform:uppercase;letter-spacing:.04em;font-size:1.35rem;color:var(--ink)}
+  .wordmark span{color:var(--yellow)}
+  .nav-links{display:flex;gap:28px;list-style:none}
+  .nav-links a{font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:500;transition:color .2s}
+  .nav-links a:hover{color:var(--yellow)}
+  .nav-burger{display:none}
+
+  /* ---------- shared ---------- */
+  section{padding:84px 0;position:relative}
+  .kicker{font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.22em;font-size:.78rem;color:var(--yellow);margin-bottom:14px}
+  .h2{font-family:var(--font-d);font-weight:800;text-transform:uppercase;letter-spacing:.01em;font-size:clamp(2rem,5vw,3.4rem);line-height:.95;color:var(--ink)}
+  .h3{font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:1.5rem;line-height:1.05;color:var(--ink)}
+  .lead{color:var(--muted);font-size:1.05rem;max-width:62ch}
+  .eyebrow{font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.2em;font-size:.72rem;color:var(--blue)}
+
+  /* chain-of-custody dotted rule */
+  .chain{height:1px;border:0;border-top:1px dashed var(--hair);margin:0;position:relative}
+  .chain::after{content:'';position:absolute;left:50%;top:-4px;transform:translateX(-50%);width:8px;height:8px;background:var(--yellow);border-radius:1px}
+
+  /* evidence tag */
+  .tag{
+    display:inline-flex;align-items:center;gap:8px;
+    border:1px solid var(--yellow);color:var(--yellow);
+    font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.16em;
+    font-size:.68rem;padding:4px 10px;border-radius:2px;
+  }
+  .tag b{color:var(--ink);font-weight:800}
+
+  /* corner brackets card */
+  .bracket{position:relative}
+  .bracket::before,.bracket::after{
+    content:'';position:absolute;width:14px;height:14px;border:2px solid var(--yellow);
+  }
+  .bracket::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+  .bracket::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+
+  /* buttons */
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+    font-size:.82rem;padding:14px 26px;border-radius:2px;cursor:pointer;border:1px solid transparent;
+    transition:all .2s;text-decoration:none;
+  }
+  .btn-primary{background:var(--yellow);color:#0C1220}
+  .btn-primary:hover{background:#FFC93A}
+  .btn-secondary{background:transparent;color:var(--ink);border-color:var(--hair)}
+  .btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;min-height:88vh;display:flex;align-items:flex-end;padding:0;overflow:hidden}
+  .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.42}
+  .hero-glow{position:absolute;inset:0;background:radial-gradient(120% 70% at 50% -10%,rgba(76,125,184,.32),transparent 60%)}
+  .hero-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,18,32,.55) 0%,rgba(12,18,32,.4) 35%,rgba(12,18,32,.92) 88%,var(--bg) 100%)}
+  .hero-rule{position:absolute;left:0;right:0;top:0;height:3px;background:var(--yellow)}
+  .hero-inner{position:relative;z-index:2;padding:0 24px 96px;max-width:1180px;margin:0 auto;width:100%}
+  .hero-kicker{font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.28em;font-size:.82rem;color:var(--yellow);margin-bottom:22px}
+  .hero h1{font-family:var(--font-d);font-weight:900;text-transform:uppercase;letter-spacing:.005em;font-size:clamp(3.2rem,11vw,8.5rem);line-height:.82;color:var(--ink);margin-bottom:26px}
+  .hero-sub{color:var(--ink);font-size:clamp(1rem,1.6vw,1.18rem);max-width:64ch;line-height:1.55;margin-bottom:34px;opacity:.92}
+  .hero-cta{display:flex;gap:16px;flex-wrap:wrap}
+  .hero-meta{position:absolute;right:24px;bottom:96px;z-index:2;text-align:right;font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.18em;font-size:.7rem;color:var(--muted)}
+  .hero-meta b{color:var(--yellow);display:block;font-size:1.6rem;letter-spacing:.02em}
+
+  /* ---------- BANNER ---------- */
+  .banner{background:var(--yellow);color:#0C1220;padding:16px 0;text-align:center}
+  .banner-inner{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.86rem}
+  .banner b{background:#0C1220;color:var(--yellow);padding:2px 8px;border-radius:2px;font-size:.72rem;letter-spacing:.16em}
+  .banner a{text-decoration:underline;text-underline-offset:3px}
+
+  /* ---------- FEATURES ---------- */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .feature-card{background:var(--panel);border:1px solid var(--hair);padding:34px 30px;border-radius:2px}
+  .feature-card .tag{margin-bottom:20px}
+  .feature-card h3{margin-bottom:12px}
+  .feature-card p{color:var(--muted);font-size:.96rem}
+
+  /* ---------- STATS ---------- */
+  .stats{background:var(--panel);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .stat .num{font-family:var(--font-d);font-weight:900;font-size:clamp(2.6rem,6vw,4.2rem);line-height:.9;color:var(--yellow)}
+  .stat .lbl{color:var(--muted);font-size:.9rem;margin-top:8px;text-transform:uppercase;letter-spacing:.08em}
+
+  /* ---------- STEPS ---------- */
+  .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--hair);border-radius:2px;overflow:hidden}
+  .step{background:var(--panel);padding:32px 26px;border-right:1px solid var(--hair);position:relative}
+  .step:last-child{border-right:0}
+  .step .n{font-family:var(--font-d);font-weight:900;font-size:2.4rem;color:var(--blue);line-height:1;margin-bottom:14px}
+  .step h3{margin-bottom:8px;font-size:1.25rem}
+  .step p{color:var(--muted);font-size:.9rem}
+
+  /* ---------- LOGOS ---------- */
+  .chips{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+  .chip{border:1px solid var(--hair);color:var(--ink);padding:10px 18px;border-radius:2px;font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.8rem;background:var(--panel)}
+
+  /* ---------- IMAGE block ---------- */
+  .fig{margin:0}
+  .fig img{width:100%;border-radius:2px;border:1px solid var(--hair)}
+  .fig figcaption{color:var(--muted);font-size:.88rem;margin-top:14px;font-style:italic;border-left:2px solid var(--yellow);padding-left:14px}
+
+  /* ---------- TEXT ---------- */
+  .text-body{max-width:70ch}
+  .text-body p{color:var(--ink);font-size:1.12rem;line-height:1.7;margin-bottom:18px}
+  .text-body p{color:var(--muted)}
+
+  /* ---------- GALLERY ---------- */
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .gcard{border:1px solid var(--hair);border-radius:2px;overflow:hidden;background:var(--panel)}
+  .gcard img{width:100%;height:240px;object-fit:cover}
+  .gcard .cap{padding:14px 16px;font-size:.85rem;color:var(--muted);border-top:1px solid var(--hair)}
+
+  /* ---------- VIDEO ---------- */
+  .video-wrap{position:relative;border-radius:2px;overflow:hidden;border:1px solid var(--hair)}
+  .video-wrap img{width:100%;height:440px;object-fit:cover;opacity:.5}
+  .video-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,18,32,.2),rgba(12,18,32,.85))}
+  .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:88px;height:88px;border-radius:50%;border:2px solid var(--yellow);display:flex;align-items:center;justify-content:center;background:rgba(12,18,32,.6)}
+  .play::after{content:'';border-style:solid;border-width:14px 0 14px 22px;border-color:transparent transparent transparent var(--yellow);margin-left:6px}
+  .video-cap{position:absolute;left:0;right:0;bottom:0;padding:24px 28px;color:var(--ink);font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:1rem}
+
+  /* ---------- PRICING ---------- */
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .price-card{background:var(--panel);border:1px solid var(--hair);padding:36px 30px;border-radius:2px;position:relative}
+  .price-card.feat{border-color:var(--yellow)}
+  .price-card .price{font-family:var(--font-d);font-weight:900;font-size:2.6rem;color:var(--ink);line-height:1}
+  .price-card .price span{color:var(--yellow)}
+  .price-card h3{margin:18px 0 10px}
+  .price-card p{color:var(--muted);font-size:.92rem}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .test-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .test-card{background:var(--panel);border:1px solid var(--hair);padding:34px 30px;border-radius:2px;position:relative}
+  .test-card .mark{font-family:var(--font-d);font-weight:900;font-size:3rem;color:var(--yellow);line-height:.6;margin-bottom:10px}
+  .test-card blockquote{color:var(--ink);font-size:1.08rem;line-height:1.6;font-style:italic;margin-bottom:18px}
+  .test-card cite{color:var(--muted);font-style:normal;font-size:.86rem;text-transform:uppercase;letter-spacing:.1em;font-family:var(--font-d);font-weight:700}
+
+  /* ---------- TEAM ---------- */
+  .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .team-card{background:var(--panel);border:1px solid var(--hair);padding:30px;border-radius:2px}
+  .team-card .avatar{width:56px;height:56px;border-radius:2px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:900;font-size:1.3rem;color:#0C1220;margin-bottom:18px}
+  .team-card h3{font-size:1.2rem;margin-bottom:8px}
+  .team-card .role{color:var(--yellow);font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.72rem;margin-bottom:12px}
+  .team-card p{color:var(--muted);font-size:.9rem}
+
+  /* ---------- QUOTE ---------- */
+  .quote-block{text-align:center;max-width:900px;margin:0 auto}
+  .quote-block blockquote{font-family:var(--font-d);font-weight:800;text-transform:uppercase;letter-spacing:.01em;font-size:clamp(1.8rem,4.5vw,3rem);line-height:1.05;color:var(--ink)}
+  .quote-block blockquote span{color:var(--yellow)}
+  .quote-block cite{display:block;margin-top:24px;color:var(--muted);font-style:normal;font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.16em;font-size:.82rem}
+
+  /* ---------- FAQ ---------- */
+  .faq-list{max-width:820px;margin:0 auto}
+  .faq-item{border-bottom:1px solid var(--hair);padding:24px 0}
+  .faq-item:first-child{border-top:1px solid var(--hair)}
+  .faq-item h3{font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:1.15rem;color:var(--ink);margin-bottom:10px}
+  .faq-item p{color:var(--muted);font-size:.96rem}
+
+  /* ---------- MARKDOWN / chronology ---------- */
+  .chrono{background:var(--panel);border:1px solid var(--hair);border-radius:2px;padding:36px;max-width:820px;margin:0 auto}
+  .chrono-row{display:grid;grid-template-columns:130px 1fr;gap:20px;padding:16px 0;border-bottom:1px dashed var(--hair)}
+  .chrono-row:last-child{border-bottom:0}
+  .chrono-date{font-family:var(--font-d);font-weight:800;color:var(--yellow);font-size:1rem;letter-spacing:.04em}
+  .chrono-txt{color:var(--ink);font-size:.98rem}
+
+  /* ---------- CTA ---------- */
+  .cta-block{text-align:center;background:var(--panel);border:1px solid var(--hair);border-radius:2px;padding:64px 40px;position:relative}
+  .cta-block .bracket-tl,.cta-block .bracket-tr,.cta-block .bracket-bl,.cta-block .bracket-br{position:absolute;width:18px;height:18px;border:2px solid var(--yellow)}
+  .cta-block .bracket-tl{top:-1px;left:-1px;border-right:0;border-bottom:0}
+  .cta-block .bracket-tr{top:-1px;right:-1px;border-left:0;border-bottom:0}
+  .cta-block .bracket-bl{bottom:-1px;left:-1px;border-right:0;border-top:0}
+  .cta-block .bracket-br{bottom:-1px;right:-1px;border-left:0;border-top:0}
+  .cta-block h2{margin-bottom:16px}
+  .cta-block p{color:var(--muted);margin-bottom:30px;font-size:1.1rem}
+
+  /* ---------- FORM ---------- */
+  .form-wrap{max-width:640px;margin:0 auto;background:var(--panel);border:1px solid var(--hair);border-radius:2px;padding:40px}
+  .form-row{margin-bottom:20px}
+  .form-row label{display:block;font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.72rem;color:var(--muted);margin-bottom:8px}
+  .form-row input,.form-row textarea{width:100%;background:var(--bg);border:1px solid var(--hair);color:var(--ink);padding:13px 16px;border-radius:2px;font-family:var(--font-b);font-size:.95rem}
+  .form-row input:focus,.form-row textarea:focus{outline:none;border-color:var(--yellow)}
+  .form-row textarea{min-height:130px;resize:vertical}
+
+  /* ---------- COLUMNS / footer ---------- */
+  footer.foot{background:var(--panel);border-top:1px solid var(--hair);padding:64px 0 32px}
+  .foot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-bottom:48px}
+  .foot-col h4{font-family:var(--font-d);font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:.82rem;color:var(--yellow);margin-bottom:16px}
+  .foot-col ul{list-style:none}
+  .foot-col li{margin-bottom:10px}
+  .foot-col a{color:var(--muted);font-size:.92rem;transition:color .2s}
+  .foot-col a:hover{color:var(--ink)}
+  .foot-bottom{border-top:1px solid var(--hair);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.82rem;color:var(--muted)}
+  .foot-bottom a{color:var(--yellow)}
+
+  /* ---------- section header ---------- */
+  .sec-head{margin-bottom:44px;max-width:760px}
+  .sec-head .h2{margin-bottom:14px}
+  .sec-head .lead{color:var(--muted)}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:900px){
+    .grid-3,.price-grid,.team-grid,.test-grid,.foot-grid{grid-template-columns:1fr}
+    .grid-4,.steps-grid{grid-template-columns:repeat(2,1fr)}
+    .gallery-grid{grid-template-columns:repeat(2,1fr)}
+    .step:nth-child(2){border-right:0}
+    .step{border-bottom:1px solid var(--hair)}
+  }
+  @media(max-width:560px){
+    section{padding:56px 0}
+    .nav-links{display:none}
+    .grid-4,.steps-grid,.gallery-grid{grid-template-columns:1fr}
+    .step{border-right:0}
+    .hero-meta{display:none}
+    .chrono-row{grid-template-columns:1fr;gap:6px}
+    .cta-block{padding:40px 24px}
+    .form-wrap{padding:28px 20px}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="design2.html" class="wordmark">Police Bias <span>2026</span></a>
+    <ul class="nav-links">
+      <li><a href="#record">The Record</a></li>
+      <li><a href="#evidence">Evidence</a></li>
+      <li><a href="#press">Press</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" data-block="hero" id="top">
+  <div class="hero-rule"></div>
+  <img class="hero-img" src="images/hero-hq.jpg" alt="Surrey Police headquarters at night under floodlight">
+  <div class="hero-glow"></div>
+  <div class="hero-grad"></div>
+  <div class="hero-inner">
+    <div class="hero-kicker">Public Disclosure — Surrey Police</div>
+    <h1>Four failures.<br>One force.</h1>
+    <p class="hero-sub">Police Bias in 2026 publishes the documented record of Surrey Police: its failure to safeguard children, its use of Released Under Investigation, its HMICFRS inspection findings, and one person's unlawful treatment at its hands. Every claim sourced. Every document public.</p>
+    <div class="hero-cta">
+      <a href="#evidence" class="btn btn-primary">Read the evidence</a>
+      <a href="#contact" class="btn btn-secondary">Press enquiries</a>
+    </div>
+  </div>
+  <div class="hero-meta">Case File<b>01 / 04</b></div>
+</section>
+
+<!-- BANNER -->
+<div class="banner" data-block="banner">
+  <div class="banner-inner">
+    <b>NEW</b>
+    HMICFRS correspondence published in full.
+    <a href="#evidence">Read the exchange →</a>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section data-block="features" id="record">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Exhibit Index</div>
+      <h2 class="h2">The documented record</h2>
+      <p class="lead">Four areas of failure, each built from public documents — inspection reports, FOI responses, correspondence and court records.</p>
+    </div>
+    <div class="grid-3">
+      <div class="feature-card bracket">
+        <span class="tag">Exhibit <b>01</b></span>
+        <h3 class="h3">Child safeguarding</h3>
+        <p>Referrals that went nowhere. What the documented record shows about how Surrey Police handled child protection concerns.</p>
+      </div>
+      <div class="feature-card bracket">
+        <span class="tag">Exhibit <b>02</b></span>
+        <h3 class="h3">Released Under Investigation</h3>
+        <p>RUI replaced bail with limbo: no conditions, no time limit, no protection. How Surrey Police use it.</p>
+      </div>
+      <div class="feature-card bracket">
+        <span class="tag">Exhibit <b>03</b></span>
+        <h3 class="h3">Unlawful treatment</h3>
+        <p>One person's documented experience: unlawful detention, disclosure failures, and a complaint trail the force could not answer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="chain">
+
+<!-- STATS -->
+<section class="stats" data-block="stats">
+  <div class="wrap">
+    <div class="grid-4">
+      <div class="stat"><div class="num">4</div><div class="lbl">Areas of documented failure</div></div>
+      <div class="stat"><div class="num">18<span style="font-size:1.6rem">mo</span></div><div class="lbl">Under investigation, no charge</div></div>
+      <div class="stat"><div class="num">3</div><div class="lbl">HMICFRS reports cited</div></div>
+      <div class="stat"><div class="num">100<span style="font-size:1.6rem">%</span></div><div class="lbl">Of claims sourced to public record</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section data-block="steps">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Methodology</div>
+      <h2 class="h2">How the record is built</h2>
+      <p class="lead">A chain of custody for every claim — from request to publication.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step"><div class="n">01</div><h3 class="h3">Request</h3><p>FOI and subject access requests filed and logged.</p></div>
+      <div class="step"><div class="n">02</div><h3 class="h3">Verify</h3><p>Every claim cross-checked against HMICFRS, IOPC and court records.</p></div>
+      <div class="step"><div class="n">03</div><h3 class="h3">Publish</h3><p>Documents published in full, unredacted where law allows.</p></div>
+      <div class="step"><div class="n">04</div><h3 class="h3">Correct</h3><p>Errors corrected on the record, in public.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<section data-block="logos">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Provenance</div>
+      <h2 class="h2">Sources cited</h2>
+    </div>
+    <div class="chips">
+      <span class="chip">HMICFRS</span>
+      <span class="chip">IOPC</span>
+      <span class="chip">College of Policing</span>
+      <span class="chip">Ministry of Justice</span>
+      <span class="chip">ICO</span>
+    </div>
+  </div>
+</section>
+
+<hr class="chain">
+
+<!-- IMAGE -->
+<section data-block="image">
+  <div class="wrap">
+    <figure class="fig bracket">
+      <img src="images/window.jpg" alt="A window viewed in low light, suggesting a long wait">
+      <figcaption>Eighteen months under investigation. Waiting is the punishment.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- TEXT -->
+<section data-block="text" id="about">
+  <div class="wrap">
+    <div class="text-body">
+      <div class="kicker">About this site</div>
+      <h2 class="h2" style="margin-bottom:24px">The record speaks for itself</h2>
+      <p>Police Bias in 2026 exists because the record speaks for itself. No spin, no anonymity, no axe to grind — just the documents, the inspection findings and the correspondence, published in one place where the public and the press can read them.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="chain">
+
+<!-- GALLERY -->
+<section data-block="gallery" id="evidence">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Evidence Base</div>
+      <h2 class="h2">The evidence</h2>
+      <p class="lead">Six frames from the documented record.</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="gcard"><img src="images/documents.jpg" alt="Stack of documents forming the evidence base"><div class="cap">The evidence base</div></figure>
+      <figure class="gcard"><img src="images/evidence.jpg" alt="Redacted document with blacked-out sections"><div class="cap">Redacted — until now</div></figure>
+      <figure class="gcard"><img src="images/playground.jpg" alt="An empty playground representing children the system missed"><div class="cap">The children the system missed</div></figure>
+      <figure class="gcard"><img src="images/press.jpg" alt="Press microphones and recorders"><div class="cap">The press will ask</div></figure>
+      <figure class="gcard"><img src="images/courtroom.jpg" alt="An empty courtroom"><div class="cap">Where it ends up</div></figure>
+      <figure class="gcard"><img src="images/vigil.jpg" alt="A candlelit vigil at dusk"><div class="cap">Why it matters</div></figure>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section data-block="video">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Case Overview</div>
+      <h2 class="h2">Watch the overview</h2>
+    </div>
+    <div class="video-wrap">
+      <img src="images/hero-hq.jpg" alt="Video poster showing Surrey Police headquarters at night">
+      <div class="video-grad"></div>
+      <div class="play" aria-hidden="true"></div>
+      <div class="video-cap">Case overview — video published with the full launch.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="chain">
+
+<!-- PRICING -->
+<section data-block="pricing">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Access</div>
+      <h2 class="h2">Use this site</h2>
+      <p class="lead">Everything here is free. Always.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="price"><span>Free</span></div>
+        <h3 class="h3">The Archive</h3>
+        <p>Full public record: every document, every source. Free, always.</p>
+      </div>
+      <div class="price-card feat">
+        <span class="tag" style="margin-bottom:18px">For press</span>
+        <div class="price"><span>Free</span></div>
+        <h3 class="h3">Press Pack</h3>
+        <p>Downloadable evidence bundle for journalists: timelines, documents, contacts.</p>
+      </div>
+      <div class="price-card">
+        <div class="price"><span>Free</span></div>
+        <h3 class="h3">Submit Evidence</h3>
+        <p>Confidential channel for your own Surrey Police story.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section data-block="testimonials">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">On the record</div>
+      <h2 class="h2">What people say</h2>
+    </div>
+    <div class="test-grid">
+      <div class="test-card bracket">
+        <div class="mark">&ldquo;</div>
+        <blockquote>Every claim on this site is sourced to a document. That's what makes it useful to us — and uncomfortable for them.</blockquote>
+        <cite>Regional newsdesk editor</cite>
+      </div>
+      <div class="test-card bracket">
+        <div class="mark">&ldquo;</div>
+        <blockquote>I went through the same thing. Reading the timeline here was the first time anyone had written it down.</blockquote>
+        <cite>Contributor, Guildford</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section data-block="team">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Who we are</div>
+      <h2 class="h2">The people behind it</h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="avatar">LB</div>
+        <h3 class="h3">Lewis Barclay</h3>
+        <div class="role">Founder</div>
+        <p>Complainant in the case study; files the requests, keeps the record.</p>
+      </div>
+      <div class="team-card">
+        <div class="avatar">VD</div>
+        <h3 class="h3">The Verification Desk</h3>
+        <div class="role">Research</div>
+        <p>Independent researchers who cross-check every published claim.</p>
+      </div>
+      <div class="team-card">
+        <div class="avatar">LS</div>
+        <h3 class="h3">Legal Support</h3>
+        <div class="role">Counsel</div>
+        <p>Counsel advising on publication at every step.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="chain">
+
+<!-- QUOTE -->
+<section data-block="quote">
+  <div class="wrap">
+    <div class="quote-block">
+      <blockquote>&ldquo;Sunlight is said to be the best of <span>disinfectants</span>.&rdquo;</blockquote>
+      <cite>— Louis Brandeis</cite>
+    </div>
+  </div>
+</section>
+
+<!-- MARKDOWN / chronology -->
+<section data-block="markdown">
+  <div class="wrap">
+    <div class="sec-head" style="text-align:center;margin-left:auto;margin-right:auto">
+      <div class="eyebrow">Case Chronology</div>
+      <h2 class="h2">The timeline</h2>
+    </div>
+    <div class="chrono">
+      <div class="chrono-row"><div class="chrono-date">2024-03</div><div class="chrono-txt">Referral made. No action recorded.</div></div>
+      <div class="chrono-row"><div class="chrono-date">2024-06</div><div class="chrono-txt">RUI imposed. No conditions, no review date.</div></div>
+      <div class="chrono-row"><div class="chrono-date">2025-01</div><div class="chrono-txt">HMICFRS inspection findings published.</div></div>
+      <div class="chrono-row"><div class="chrono-date">2025-09</div><div class="chrono-txt">Complaint closed, unresolved.</div></div>
+      <div class="chrono-row"><div class="chrono-date">2026</div><div class="chrono-txt">The record goes public.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section data-block="faq">
+  <div class="wrap">
+    <div class="sec-head" style="text-align:center;margin-left:auto;margin-right:auto">
+      <div class="eyebrow">Questions</div>
+      <h2 class="h2">Frequently asked</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <h3>Is this legal?</h3>
+        <p>Yes. Publication is protected under Article 10 ECHR, and every document cited is one we are lawfully entitled to publish.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Are the documents real?</h3>
+        <p>Yes — FOI responses, HMICFRS reports, IOPC correspondence and court records, published in full.</p>
+      </div>
+      <div class="faq-item">
+        <h3>What is RUI?</h3>
+        <p>Released Under Investigation: pre-charge bail's replacement. No conditions, no supervision, often no end date.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can I help?</h3>
+        <p>Yes. Send your documents through the confidential channel, or tell the press desk this story matters.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Will you take it down if pressured?</h3>
+        <p>Only a court can decide that. Pressure is not a legal argument.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="chain">
+
+<!-- CTA -->
+<section data-block="cta">
+  <div class="wrap">
+    <div class="cta-block">
+      <span class="bracket-tl"></span><span class="bracket-tr"></span><span class="bracket-bl"></span><span class="bracket-br"></span>
+      <h2 class="h2">The record belongs to the public.</h2>
+      <p>Read the evidence, then make up your own mind.</p>
+      <a href="#evidence" class="btn btn-primary">Start with the timeline</a>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section data-block="form" id="contact">
+  <div class="wrap">
+    <div class="sec-head" style="text-align:center;margin-left:auto;margin-right:auto">
+      <div class="eyebrow">Contact</div>
+      <h2 class="h2">Press &amp; public enquiries</h2>
+    </div>
+    <form class="form-wrap" onsubmit="return false">
+      <div class="form-row">
+        <label for="f-name">Name</label>
+        <input id="f-name" type="text" placeholder="Your name">
+      </div>
+      <div class="form-row">
+        <label for="f-email">Email</label>
+        <input id="f-email" type="email" placeholder="you@example.com">
+      </div>
+      <div class="form-row">
+        <label for="f-msg">Message</label>
+        <textarea id="f-msg" placeholder="Your enquiry"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">Send to the press desk</button>
+    </form>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<hr class="chain" data-block="divider">
+
+<!-- COLUMNS / FOOTER -->
+<footer class="foot" data-block="columns">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <h4>The Record</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#evidence">Timeline</a></li>
+          <li><a href="#evidence">Documents</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Accountability</h4>
+        <ul>
+          <li><a href="#">HMICFRS reports</a></li>
+          <li><a href="#">IOPC</a></li>
+          <li><a href="#">FOI log</a></li>
+        </ul>
+      </div>
+      <div class="foot-col" id="press">
+        <h4>Press</h4>
+        <ul>
+          <li><a href="design2-tertiary.html">Press pack</a></li>
+          <li><a href="#contact">Enquiries</a></li>
+          <li><a href="#">Corrections</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Complaints policy</a></li>
+          <li><a href="#">Sources &amp; methodology</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>Police Bias in 2026 · Design 2 of 4 · <a href="index.html">All designs</a></span>
+      <span>Generated with Odokai</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Police Bias in 2026 — Design 1: Declassified</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --manila:#F1E9D8;
+    --ink:#1E1B16;
+    --stamp:#B3261E;
+    --faint:#6E6656;
+    --hair:#D8CCB4;
+    --manila-dark:#E7DCC4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--manila);
+    color:var(--ink);
+    font-family:'Newsreader',Georgia,serif;
+    font-size:18px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'Courier Prime',monospace;}
+  .container{max-width:1080px;margin:0 auto;padding:0 24px;}
+  a{color:var(--stamp);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  /* NAV */
+  nav.top{
+    position:sticky;top:0;z-index:50;
+    background:var(--manila);
+    border-bottom:1px solid var(--hair);
+  }
+  nav.top .container{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 24px;gap:16px;flex-wrap:wrap;
+  }
+  .wordmark{
+    font-family:'Courier Prime',monospace;
+    font-weight:700;font-size:14px;letter-spacing:.04em;
+    background:var(--ink);color:var(--manila);
+    padding:8px 18px 8px 12px;
+    clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%);
+    text-transform:uppercase;white-space:nowrap;
+  }
+  .nav-links{display:flex;gap:22px;list-style:none;flex-wrap:wrap;}
+  .nav-links a{
+    font-family:'Courier Prime',monospace;
+    font-size:13px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--ink);
+  }
+  .nav-links a:hover{color:var(--stamp);text-decoration:none;border-bottom:2px solid var(--stamp);}
+
+  /* FILE TAB */
+  .file-tab{
+    display:inline-block;
+    font-family:'Courier Prime',monospace;
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    background:var(--ink);color:var(--manila);
+    padding:6px 22px 6px 14px;
+    clip-path:polygon(0 0,100% 0,calc(100% - 12px) 100%,0 100%);
+  }
+
+  /* KICKER */
+  .kicker{
+    font-family:'Courier Prime',monospace;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--stamp);font-weight:700;
+  }
+
+  /* REDACTION BAR */
+  .redact{
+    background:var(--ink);color:var(--ink);
+    padding:0 .15em;border:none;
+    box-shadow:0 1px 0 rgba(0,0,0,.15);
+    display:inline-block;line-height:1;
+  }
+
+  /* RUBBER STAMP */
+  .stamp{
+    display:inline-block;
+    font-family:'Courier Prime',monospace;
+    font-weight:700;font-size:22px;letter-spacing:.12em;
+    color:var(--stamp);
+    border:3px double var(--stamp);
+    padding:10px 22px;
+    transform:rotate(-7deg);
+    text-transform:uppercase;
+    opacity:.92;
+    box-shadow:inset 0 0 0 1px rgba(179,38,30,.25);
+  }
+  .stamp.small{font-size:14px;padding:6px 14px;transform:rotate(-5deg);}
+
+  /* PERFORATION */
+  .perf{
+    border:none;border-top:2px dashed var(--hair);
+    margin:0;
+  }
+  hr[data-block="divider"]{
+    border:none;border-top:2px dashed var(--hair);
+    margin:48px 0;
+  }
+
+  /* SECTION */
+  section{padding:56px 0;}
+  section + section{border-top:2px dashed var(--hair);}
+  .section-head{margin-bottom:32px;}
+  .section-head h2{
+    font-family:'Newsreader',serif;font-weight:600;
+    font-size:34px;line-height:1.2;margin-top:6px;
+  }
+
+  /* HERO */
+  .hero{padding:64px 0 56px;border-top:none;}
+  .hero .hero-inner{position:relative;}
+  .hero h1{
+    font-family:'Newsreader',serif;font-weight:700;
+    font-size:clamp(40px,7vw,76px);line-height:1.05;
+    margin:22px 0 26px;letter-spacing:-.01em;
+  }
+  .hero .sub{
+    font-size:20px;line-height:1.55;color:var(--ink);
+    max-width:720px;margin-bottom:30px;
+  }
+  .hero .stamp{position:absolute;right:6px;top:0;}
+  .btn-row{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{
+    font-family:'Courier Prime',monospace;font-weight:700;
+    font-size:14px;letter-spacing:.06em;text-transform:uppercase;
+    padding:14px 26px;border:2px solid var(--ink);
+    background:var(--ink);color:var(--manila);cursor:pointer;
+    display:inline-block;
+  }
+  .btn:hover{text-decoration:none;background:var(--stamp);border-color:var(--stamp);}
+  .btn.secondary{background:transparent;color:var(--ink);}
+  .btn.secondary:hover{background:var(--ink);color:var(--manila);border-color:var(--ink);}
+
+  /* BANNER */
+  .banner{
+    background:var(--ink);color:var(--manila);
+    padding:18px 0;
+  }
+  .banner .container{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .banner .tag{
+    font-family:'Courier Prime',monospace;font-weight:700;
+    font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    background:var(--stamp);color:var(--manila);padding:4px 10px;
+  }
+  .banner p{font-size:16px;}
+  .banner a{color:var(--manila);text-decoration:underline;}
+
+  /* FEATURES */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+  .feature{
+    border:1px solid var(--hair);background:var(--manila-dark);
+    padding:28px;position:relative;
+  }
+  .feature .num{
+    font-family:'Courier Prime',monospace;font-size:12px;
+    color:var(--stamp);font-weight:700;letter-spacing:.1em;
+  }
+  .feature h3{font-family:'Newsreader',serif;font-weight:600;font-size:22px;margin:8px 0 10px;}
+  .feature p{font-size:16px;color:var(--faint);}
+
+  /* STATS */
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+  .stat{text-align:left;border-left:3px solid var(--stamp);padding:6px 0 6px 18px;}
+  .stat .big{font-family:'Newsreader',serif;font-weight:700;font-size:42px;line-height:1;}
+  .stat .lbl{font-family:'Courier Prime',monospace;font-size:12px;color:var(--faint);margin-top:8px;text-transform:uppercase;letter-spacing:.06em;}
+
+  /* STEPS */
+  .step{display:flex;gap:20px;padding:20px 0;border-bottom:1px solid var(--hair);}
+  .step:last-child{border-bottom:none;}
+  .step .idx{
+    font-family:'Courier Prime',monospace;font-weight:700;font-size:14px;
+    color:var(--stamp);min-width:28px;
+  }
+  .step h4{font-family:'Newsreader',serif;font-weight:600;font-size:20px;}
+  .step p{font-size:16px;color:var(--faint);}
+
+  /* LOGOS */
+  .chips{display:flex;gap:14px;flex-wrap:wrap;}
+  .chip{
+    font-family:'Courier Prime',monospace;font-size:13px;letter-spacing:.04em;
+    border:1px solid var(--ink);padding:8px 16px;text-transform:uppercase;
+  }
+
+  /* IMAGE */
+  .figure img{width:100%;display:block;border:1px solid var(--hair);}
+  .figure figcaption{
+    font-family:'Courier Prime',monospace;font-size:13px;
+    color:var(--faint);padding:12px 0;border-bottom:1px solid var(--hair);
+  }
+
+  /* GALLERY */
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .gallery-grid figure img{width:100%;display:block;border:1px solid var(--hair);}
+  .gallery-grid figcaption{font-family:'Courier Prime',monospace;font-size:12px;color:var(--faint);padding:8px 2px;}
+
+  /* VIDEO */
+  .video-poster{position:relative;border:1px solid var(--hair);}
+  .video-poster img{width:100%;display:block;filter:grayscale(.2);}
+  .play-btn{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:84px;height:84px;background:var(--manila);border:3px solid var(--ink);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .play-btn::after{
+    content:"";width:0;height:0;border-left:24px solid var(--ink);
+    border-top:16px solid transparent;border-bottom:16px solid transparent;
+    margin-left:6px;
+  }
+  .video-cap{font-family:'Courier Prime',monospace;font-size:13px;color:var(--faint);padding:12px 0;}
+
+  /* PRICING */
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .price-card{border:2px solid var(--ink);padding:28px;background:var(--manila-dark);}
+  .price-card .tier{font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--stamp);font-weight:700;}
+  .price-card h3{font-family:'Newsreader',serif;font-weight:600;font-size:24px;margin:8px 0 6px;}
+  .price-card .price{font-family:'Newsreader',serif;font-weight:700;font-size:32px;margin:10px 0 14px;}
+  .price-card p{font-size:15px;color:var(--faint);}
+
+  /* TESTIMONIALS */
+  .quote-block{border-left:4px solid var(--stamp);padding:8px 0 8px 24px;margin-bottom:28px;}
+  .quote-block p{font-family:'Newsreader',serif;font-style:italic;font-size:22px;line-height:1.4;}
+  .quote-block cite{display:block;font-family:'Courier Prime',monospace;font-size:13px;color:var(--faint);margin-top:12px;font-style:normal;}
+
+  /* TEAM */
+  .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .member{border:1px solid var(--hair);padding:24px;background:var(--manila-dark);}
+  .member h4{font-family:'Newsreader',serif;font-weight:600;font-size:20px;}
+  .member .role{font-family:'Courier Prime',monospace;font-size:12px;color:var(--stamp);text-transform:uppercase;letter-spacing:.06em;margin:4px 0 10px;}
+  .member p{font-size:15px;color:var(--faint);}
+
+  /* PULL QUOTE */
+  .pullquote{text-align:center;padding:20px 0;}
+  .pullquote blockquote{font-family:'Newsreader',serif;font-style:italic;font-weight:500;font-size:30px;line-height:1.3;max-width:760px;margin:0 auto;}
+  .pullquote cite{display:block;font-family:'Courier Prime',monospace;font-size:13px;color:var(--faint);margin-top:16px;font-style:normal;text-transform:uppercase;letter-spacing:.06em;}
+
+  /* FAQ */
+  .faq-item{border-bottom:1px solid var(--hair);padding:20px 0;}
+  .faq-item h4{font-family:'Newsreader',serif;font-weight:600;font-size:19px;margin-bottom:8px;}
+  .faq-item p{font-size:16px;color:var(--faint);}
+
+  /* MARKDOWN / CHRONOLOGY */
+  .chrono{font-family:'Courier Prime',monospace;font-size:15px;line-height:2;white-space:pre-wrap;background:var(--manila-dark);border:1px solid var(--hair);padding:24px 28px;}
+  .chrono .yr{color:var(--stamp);font-weight:700;}
+
+  /* CTA */
+  .cta-block{text-align:center;padding:64px 0;}
+  .cta-block h2{font-family:'Newsreader',serif;font-weight:700;font-size:40px;line-height:1.15;}
+  .cta-block p{font-size:19px;color:var(--faint);margin:14px 0 28px;}
+
+  /* FORM */
+  form.dossier{display:grid;gap:18px;max-width:560px;}
+  form.dossier label{font-family:'Courier Prime',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);}
+  form.dossier input,form.dossier textarea{
+    font-family:'Newsreader',serif;font-size:17px;
+    border:1px solid var(--ink);background:var(--manila);
+    padding:12px 14px;width:100%;
+  }
+  form.dossier textarea{min-height:120px;resize:vertical;}
+
+  /* COLUMNS FOOTER */
+  footer.site{border-top:2px dashed var(--hair);padding:48px 0 32px;}
+  .col-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-bottom:32px;}
+  .col-grid h5{font-family:'Courier Prime',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--stamp);margin-bottom:12px;}
+  .col-grid ul{list-style:none;}
+  .col-grid li{font-size:15px;padding:4px 0;}
+  .col-grid a{color:var(--ink);}
+  .foot-meta{font-family:'Courier Prime',monospace;font-size:12px;color:var(--faint);border-top:1px solid var(--hair);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+
+  /* RESPONSIVE */
+  @media(max-width:860px){
+    .grid-3,.price-grid,.team-grid{grid-template-columns:1fr;}
+    .grid-4{grid-template-columns:repeat(2,1fr);}
+    .gallery-grid{grid-template-columns:repeat(2,1fr);}
+    .col-grid{grid-template-columns:repeat(2,1fr);}
+    .hero .stamp{position:static;margin-bottom:18px;}
+  }
+  @media(max-width:480px){
+    .grid-4{grid-template-columns:1fr;}
+    .gallery-grid{grid-template-columns:1fr;}
+    .col-grid{grid-template-columns:1fr;}
+    body{font-size:17px;}
+    .hero h1{font-size:38px;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="container">
+    <a href="design1.html" class="wordmark">Police Bias in 2026</a>
+    <ul class="nav-links">
+      <li><a href="#record">The Record</a></li>
+      <li><a href="#evidence">Evidence</a></li>
+      <li><a href="design1-tertiary.html">Press</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" data-block="hero" id="top">
+  <div class="container">
+    <div class="hero-inner">
+      <span class="file-tab">FILE: SURREY POLICE — PUBLIC RECORD</span>
+      <div class="stamp">Disclosed</div>
+      <p class="kicker" style="margin-top:18px;">PUBLIC DISCLOSURE — SURREY POLICE</p>
+      <h1>Four failures.<br>One <span class="redact">force</span>.</h1>
+      <p class="sub">Police Bias in 2026 publishes the documented record of Surrey Police: its failure to safeguard children, its use of <span class="redact">Released Under Investigation</span>, its HMICFRS inspection findings, and one person's unlawful treatment at its hands. Every claim sourced. Every document public.</p>
+      <div class="btn-row">
+        <a href="#evidence" class="btn">Read the evidence</a>
+        <a href="#contact" class="btn secondary">Press enquiries</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BANNER -->
+<div class="banner" data-block="banner">
+  <div class="container">
+    <span class="tag">New</span>
+    <p>HMICFRS correspondence published in full. <a href="#evidence">Read the exchange.</a></p>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section data-block="features" id="record">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">The record · 01</p>
+      <h2>Four failures, documented.</h2>
+    </div>
+    <div class="grid-3">
+      <div class="feature">
+        <p class="num">FAILING 01</p>
+        <h3>Child safeguarding</h3>
+        <p>Referrals that went nowhere. What the documented record shows about how Surrey Police handled child protection concerns.</p>
+      </div>
+      <div class="feature">
+        <p class="num">FAILING 02</p>
+        <h3>Released Under Investigation</h3>
+        <p>RUI replaced bail with limbo: no conditions, no time limit, no protection. How Surrey Police use it.</p>
+      </div>
+      <div class="feature">
+        <p class="num">FAILING 03</p>
+        <h3>Unlawful treatment</h3>
+        <p>One person's documented experience: unlawful detention, disclosure failures, and a complaint trail the force could not answer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section data-block="stats">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">The record · 02</p>
+      <h2>By the numbers.</h2>
+    </div>
+    <div class="grid-4">
+      <div class="stat"><div class="big">4</div><div class="lbl">Areas of documented failure</div></div>
+      <div class="stat"><div class="big">18 months</div><div class="lbl">Under investigation, no charge</div></div>
+      <div class="stat"><div class="big">3</div><div class="lbl">HMICFRS reports cited</div></div>
+      <div class="stat"><div class="big">100%</div><div class="lbl">Of claims sourced to public record</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section data-block="steps">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Method</p>
+      <h2>How this record was built.</h2>
+    </div>
+    <div class="step"><span class="idx">01</span><div><h4>Request</h4><p>FOI and subject access requests filed and logged.</p></div></div>
+    <div class="step"><span class="idx">02</span><div><h4>Verify</h4><p>Every claim cross-checked against HMICFRS, IOPC and court records.</p></div></div>
+    <div class="step"><span class="idx">03</span><div><h4>Publish</h4><p>Documents published in full, unredacted where law allows.</p></div></div>
+    <div class="step"><span class="idx">04</span><div><h4>Correct</h4><p>Errors corrected on the record, in public.</p></div></div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<section data-block="logos">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Sources cited</p>
+      <h2>Where the record comes from.</h2>
+    </div>
+    <div class="chips">
+      <span class="chip">HMICFRS</span>
+      <span class="chip">IOPC</span>
+      <span class="chip">College of Policing</span>
+      <span class="chip">Ministry of Justice</span>
+      <span class="chip">ICO</span>
+    </div>
+  </div>
+</section>
+
+<!-- IMAGE -->
+<section data-block="image" id="evidence">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Exhibit · A</p>
+      <h2>The waiting room.</h2>
+    </div>
+    <figure class="figure">
+      <img src="images/window.jpg" alt="A window looking out onto an empty street, representing months spent waiting under investigation.">
+      <figcaption>Eighteen months under investigation. Waiting is the punishment.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- TEXT (ABOUT) -->
+<section data-block="text">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">About</p>
+      <h2>Why this site exists.</h2>
+    </div>
+    <p style="font-size:21px;line-height:1.55;max-width:760px;">Police Bias in 2026 exists because the record speaks for itself. No spin, no anonymity, no axe to grind — just the documents, the inspection findings and the correspondence, published in one place where the public and the press can read them.</p>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section data-block="gallery">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">The evidence base</p>
+      <h2>The documents, the places, the people.</h2>
+    </div>
+    <div class="gallery-grid">
+      <figure><img src="images/documents.jpg" alt="Stack of documents forming the evidence base."><figcaption>The evidence base</figcaption></figure>
+      <figure><img src="images/evidence.jpg" alt="A redacted document page."><figcaption>Redacted — until now</figcaption></figure>
+      <figure><img src="images/playground.jpg" alt="An empty playground."><figcaption>The children the system missed</figcaption></figure>
+      <figure><img src="images/press.jpg" alt="Press microphones and notebooks."><figcaption>The press will ask</figcaption></figure>
+      <figure><img src="images/courtroom.jpg" alt="An empty courtroom."><figcaption>Where it ends up</figcaption></figure>
+      <figure><img src="images/vigil.jpg" alt="A candlelit vigil."><figcaption>Why it matters</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section data-block="video">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Case overview</p>
+      <h2>Watch the overview.</h2>
+    </div>
+    <div class="video-poster">
+      <img src="images/hero-hq.jpg" alt="Surrey Police headquarters, used as the video poster image.">
+      <div class="play-btn" aria-hidden="true"></div>
+    </div>
+    <p class="video-cap">Case overview — video published with the full launch.</p>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section data-block="pricing">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Use this site</p>
+      <h2>Three ways in. All free.</h2>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <p class="tier">Tier 01</p>
+        <h3>The Archive</h3>
+        <div class="price">Free</div>
+        <p>Full public record: every document, every source. Free, always.</p>
+      </div>
+      <div class="price-card">
+        <p class="tier">Tier 02</p>
+        <h3>Press Pack</h3>
+        <div class="price">Free</div>
+        <p>Downloadable evidence bundle for journalists: timelines, documents, contacts.</p>
+      </div>
+      <div class="price-card">
+        <p class="tier">Tier 03</p>
+        <h3>Submit Evidence</h3>
+        <div class="price">Free</div>
+        <p>Confidential channel for your own Surrey Police story.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section data-block="testimonials">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">On the record</p>
+      <h2>What people say.</h2>
+    </div>
+    <div class="quote-block">
+      <p>"Every claim on this site is sourced to a document. That's what makes it useful to us — and uncomfortable for them."</p>
+      <cite>— Regional newsdesk editor</cite>
+    </div>
+    <div class="quote-block">
+      <p>"I went through the same thing. Reading the timeline here was the first time anyone had written it down."</p>
+      <cite>— Contributor, Guildford</cite>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section data-block="team">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Who</p>
+      <h2>The people behind the record.</h2>
+    </div>
+    <div class="team-grid">
+      <div class="member">
+        <h4>Lewis Barclay</h4>
+        <p class="role">Founder</p>
+        <p>Complainant in the case study; files the requests, keeps the record.</p>
+      </div>
+      <div class="member">
+        <h4>The Verification Desk</h4>
+        <p class="role">Research</p>
+        <p>Independent researchers who cross-check every published claim.</p>
+      </div>
+      <div class="member">
+        <h4>Legal Support</h4>
+        <p class="role">Counsel</p>
+        <p>Counsel advising on publication at every step.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section data-block="quote">
+  <div class="container">
+    <div class="pullquote">
+      <blockquote>"Sunlight is said to be the best of disinfectants."</blockquote>
+      <cite>— Louis Brandeis</cite>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section data-block="faq">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Questions</p>
+      <h2>Frequently asked.</h2>
+    </div>
+    <div class="faq-item"><h4>Is this legal?</h4><p>Yes. Publication is protected under Article 10 ECHR, and every document cited is one we are lawfully entitled to publish.</p></div>
+    <div class="faq-item"><h4>Are the documents real?</h4><p>Yes — FOI responses, HMICFRS reports, IOPC correspondence and court records, published in full.</p></div>
+    <div class="faq-item"><h4>What is RUI?</h4><p>Released Under Investigation: pre-charge bail's replacement. No conditions, no supervision, often no end date.</p></div>
+    <div class="faq-item"><h4>Can I help?</h4><p>Yes. Send your documents through the confidential channel, or tell the press desk this story matters.</p></div>
+    <div class="faq-item"><h4>Will you take it down if pressured?</h4><p>Only a court can decide that. Pressure is not a legal argument.</p></div>
+  </div>
+</section>
+
+<!-- MARKDOWN / CHRONOLOGY -->
+<section data-block="markdown">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Case chronology</p>
+      <h2>The timeline, typed.</h2>
+    </div>
+    <div class="chrono"><span class="yr">2024-03</span> — Referral made. No action recorded.
+<span class="yr">2024-06</span> — RUI imposed. No conditions, no review date.
+<span class="yr">2025-01</span> — HMICFRS inspection findings published.
+<span class="yr">2025-09</span> — Complaint closed, unresolved.
+<span class="yr">2026</span> — The record goes public.</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section data-block="cta">
+  <div class="container">
+    <div class="cta-block">
+      <span class="stamp small" style="margin-bottom:18px;">Public record</span>
+      <h2>The record belongs to the public.</h2>
+      <p>Read the evidence, then make up your own mind.</p>
+      <a href="#" class="btn">Start with the timeline</a>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section data-block="form" id="contact">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Contact</p>
+      <h2>Press &amp; public enquiries.</h2>
+    </div>
+    <form class="dossier" action="#" method="post">
+      <div><label for="f-name">Name</label><input id="f-name" name="name" type="text" placeholder="Your name"></div>
+      <div><label for="f-email">Email</label><input id="f-email" name="email" type="email" placeholder="you@newsdesk.co.uk"></div>
+      <div><label for="f-msg">Message</label><textarea id="f-msg" name="message" placeholder="What's your enquiry?"></textarea></div>
+      <div><button type="submit" class="btn">Send to the press desk</button></div>
+    </form>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<hr data-block="divider">
+
+<footer class="site" data-block="columns">
+  <div class="container">
+    <div class="col-grid">
+      <div>
+        <h5>The Record</h5>
+        <ul><li><a href="#">About</a></li><li><a href="#">Timeline</a></li><li><a href="#">Documents</a></li></ul>
+      </div>
+      <div>
+        <h5>Accountability</h5>
+        <ul><li><a href="#">HMICFRS reports</a></li><li><a href="#">IOPC</a></li><li><a href="#">FOI log</a></li></ul>
+      </div>
+      <div>
+        <h5>Press</h5>
+        <ul><li><a href="design1-tertiary.html">Press pack</a></li><li><a href="#contact">Enquiries</a></li><li><a href="#">Corrections</a></li></ul>
+      </div>
+      <div>
+        <h5>Legal</h5>
+        <ul><li><a href="#">Privacy</a></li><li><a href="#">Complaints policy</a></li><li><a href="#">Sources &amp; methodology</a></li></ul>
+      </div>
+    </div>
+    <div class="foot-meta">
+      <span>Police Bias in 2026 · Design 1 of 4 · <a href="index.html">All designs</a></span>
+      <span>Generated with Odokai</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

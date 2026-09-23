@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Police Bias in 2026 — Design 4: The Count</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#22262C; --panel:#2A2F37; --panel-2:#2E333C;
+    --text:#E9ECEF; --muted:#9AA3AD; --accent:#E8762C; --green:#7FB069;
+    --line:#3A404A; --line-soft:#33394342;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  img{max-width:100%;display:block}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  /* ---- Nav ---- */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(34,38,44,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav-inner{max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .wordmark{font-family:var(--mono);font-weight:700;font-size:14px;letter-spacing:.04em;color:var(--text);display:flex;align-items:center;gap:10px}
+  .wordmark .dot{width:8px;height:8px;background:var(--accent);display:inline-block}
+  .nav-links{display:flex;gap:22px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+  .nav-links a{color:var(--muted)}
+  .nav-links a:hover{color:var(--text);text-decoration:none}
+
+  /* ---- Ledger row numbering ---- */
+  .ledger{position:relative;border-top:1px solid var(--line);padding:64px 0}
+  .ledger-row{display:grid;grid-template-columns:64px 1fr;gap:24px;align-items:start}
+  .row-num{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.08em;padding-top:6px}
+  .row-num b{color:var(--accent);font-weight:600}
+
+  /* ---- Barcode strip ---- */
+  .barcode{height:14px;background:repeating-linear-gradient(90deg,var(--text) 0 2px,transparent 2px 4px,var(--text) 4px 5px,transparent 5px 9px,var(--text) 9px 11px,transparent 11px 14px);opacity:.5;margin-bottom:20px}
+  .barcode.thin{height:8px}
+
+  /* ---- Grade chip ---- */
+  .chip{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);padding:5px 10px;color:var(--muted);border-radius:3px}
+  .chip.orange{border-color:var(--accent);color:var(--accent)}
+  .chip.green{border-color:var(--green);color:var(--green)}
+
+  /* ---- Kicker ---- */
+  .kicker{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+
+  /* ---- Hero ---- */
+  .hero{padding:90px 0 70px;border-top:0}
+  .hero h1{font-family:var(--sans);font-weight:900;font-size:clamp(48px,9vw,112px);line-height:.92;letter-spacing:-.04em;margin-bottom:28px}
+  .hero .sub{font-size:19px;color:var(--muted);max-width:760px;margin-bottom:36px;line-height:1.55}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:56px}
+  .btn{font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:14px 22px;border-radius:4px;border:1px solid var(--accent);cursor:pointer;transition:.15s;display:inline-block}
+  .btn.primary{background:var(--accent);color:#1a1208}
+  .btn.primary:hover{background:#f08540;text-decoration:none}
+  .btn.secondary{background:transparent;color:var(--text);border-color:var(--line)}
+  .btn.secondary:hover{border-color:var(--text);text-decoration:none}
+
+  /* ---- Stat wall ---- */
+  .statwall{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .statwall .stat{padding:28px 20px;border-right:1px solid var(--line)}
+  .statwall .stat:last-child{border-right:0}
+  .statwall .num{font-family:var(--mono);font-weight:700;font-size:clamp(40px,7vw,76px);line-height:1;letter-spacing:-.02em;color:var(--text)}
+  .statwall .num .acc{color:var(--accent)}
+  .statwall .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:12px}
+
+  /* ---- Banner ---- */
+  .banner{background:var(--accent);color:#1a1208;padding:14px 0}
+  .banner-inner{max-width:1180px;margin:0 auto;padding:0 24px;font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.04em;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .banner-inner a{color:#1a1208;text-decoration:underline}
+
+  /* ---- Section heading ---- */
+  h2.sec{font-family:var(--sans);font-weight:800;font-size:clamp(30px,4.5vw,48px);line-height:1.05;letter-spacing:-.025em;margin-bottom:14px}
+  h3.sec{font-family:var(--sans);font-weight:700;font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
+  .sec-sub{color:var(--muted);font-size:17px;max-width:680px;margin-bottom:40px}
+
+  /* ---- Features ---- */
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+  .feature{padding:28px 24px;border-right:1px solid var(--line);border-top:1px solid var(--line)}
+  .feature:last-child{border-right:0}
+  .feature .fnum{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600;letter-spacing:.08em;margin-bottom:14px}
+  .feature h3{font-family:var(--sans);font-weight:700;font-size:20px;margin-bottom:10px;letter-spacing:-.01em}
+  .feature p{color:var(--muted);font-size:15px;line-height:1.6}
+
+  /* ---- Image ---- */
+  .figure{margin:0}
+  .figure img{width:100%;border-radius:6px;border:1px solid var(--line)}
+  .figure figcaption{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:12px;letter-spacing:.04em;padding-left:14px;border-left:2px solid var(--accent)}
+
+  /* ---- Gallery ---- */
+  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .gallery .gcard img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
+  .gallery .gcard .cap{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px;letter-spacing:.04em}
+
+  /* ---- Video poster ---- */
+  .video-poster{position:relative;border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+  .video-poster img{width:100%;max-height:480px;object-fit:cover;filter:brightness(.55)}
+  .video-poster .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:84px;height:84px;border-radius:50%;border:2px solid var(--text);display:flex;align-items:center;justify-content:center;background:rgba(34,38,44,.5)}
+  .video-poster .play::after{content:"";border-style:solid;border-width:14px 0 14px 22px;border-color:transparent transparent transparent var(--text);margin-left:6px}
+  .video-poster .vcap{position:absolute;bottom:18px;left:20px;font-family:var(--mono);font-size:13px;color:var(--text);letter-spacing:.03em}
+
+  /* ---- Pricing ---- */
+  .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .price-card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:28px 24px}
+  .price-card .ptag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  .price-card h3{font-family:var(--sans);font-weight:700;font-size:20px;margin-bottom:10px}
+  .price-card .pdesc{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:18px}
+  .price-card .pprice{font-family:var(--mono);font-weight:700;font-size:28px;color:var(--text)}
+  .price-card .pprice span{font-size:13px;color:var(--muted);font-weight:400}
+
+  /* ---- Testimonials ---- */
+  .testimonials{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .tcard{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:28px 26px}
+  .tcard .tally{font-family:var(--mono);color:var(--accent);font-size:18px;letter-spacing:.1em;margin-bottom:16px}
+  .tcard blockquote{font-family:var(--sans);font-size:18px;line-height:1.5;font-weight:500;color:var(--text);margin-bottom:16px}
+  .tcard cite{font-family:var(--mono);font-size:12px;color:var(--muted);font-style:normal;letter-spacing:.04em}
+
+  /* ---- Team ---- */
+  .team{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+  .tmember{padding:24px;border-right:1px solid var(--line);border-top:1px solid var(--line)}
+  .tmember:last-child{border-right:0}
+  .tmember .tid{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.08em;margin-bottom:12px}
+  .tmember h3{font-family:var(--sans);font-weight:700;font-size:18px;margin-bottom:8px}
+  .tmember p{color:var(--muted);font-size:14px;line-height:1.55}
+
+  /* ---- Quote ---- */
+  .bigquote{padding:48px 0;text-align:center}
+  .bigquote blockquote{font-family:var(--sans);font-weight:600;font-size:clamp(26px,4vw,40px);line-height:1.25;letter-spacing:-.02em;max-width:820px;margin:0 auto 20px}
+  .bigquote blockquote::before{content:"\201C";color:var(--accent)}
+  .bigquote blockquote::after{content:"\201D";color:var(--accent)}
+  .bigquote cite{font-family:var(--mono);font-size:13px;color:var(--muted);font-style:normal;letter-spacing:.06em}
+
+  /* ---- FAQ ---- */
+  .faq{display:grid;grid-template-columns:1fr;gap:0}
+  .faq-item{padding:22px 0;border-bottom:1px solid var(--line)}
+  .faq-item:first-child{border-top:1px solid var(--line)}
+  .faq-item .fq{font-family:var(--sans);font-weight:600;font-size:17px;margin-bottom:8px;display:flex;gap:12px}
+  .faq-item .fq .qnum{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600;flex-shrink:0;padding-top:3px}
+  .faq-item .fa{color:var(--muted);font-size:15px;line-height:1.6;padding-left:32px}
+
+  /* ---- Markdown ledger table ---- */
+  .ledger-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:14px}
+  .ledger-table th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:12px 14px;border-bottom:1px solid var(--line)}
+  .ledger-table td{padding:14px;border-bottom:1px solid var(--line);color:var(--text)}
+  .ledger-table td:first-child{color:var(--accent);font-weight:600;white-space:nowrap}
+  .ledger-table tr:last-child td{border-bottom:0}
+
+  /* ---- CTA block ---- */
+  .cta-block{text-align:center;padding:70px 24px;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+  .cta-block h2{font-family:var(--sans);font-weight:800;font-size:clamp(28px,4.5vw,44px);letter-spacing:-.025em;margin-bottom:14px}
+  .cta-block p{color:var(--muted);font-size:17px;margin-bottom:30px}
+
+  /* ---- Form ---- */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .form-grid .full{grid-column:1/-1}
+  label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+  input,textarea{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--text);font-family:var(--sans);font-size:15px;padding:12px 14px;border-radius:4px}
+  input:focus,textarea:focus{outline:none;border-color:var(--accent)}
+  textarea{min-height:120px;resize:vertical}
+
+  /* ---- Logos / sources ---- */
+  .logos{display:flex;flex-wrap:wrap;gap:10px}
+  .logo-chip{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;border:1px solid var(--line);padding:8px 14px;border-radius:3px;color:var(--muted)}
+
+  /* ---- Columns footer ---- */
+  .cols{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+  .col h4{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  .col ul{list-style:none}
+  .col li{margin-bottom:8px}
+  .col a{color:var(--muted);font-size:14px}
+  .col a:hover{color:var(--text);text-decoration:none}
+
+  /* ---- Divider ---- */
+  hr.divider{border:0;border-top:1px solid var(--line);margin:48px 0}
+
+  /* ---- Footer ---- */
+  footer.site{border-top:1px solid var(--line);padding:40px 0 30px}
+  .foot-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+  .foot-inner .wm{font-family:var(--mono);font-size:13px;color:var(--muted)}
+  .foot-inner .wm b{color:var(--text)}
+  .foot-meta{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em}
+  .foot-meta a{color:var(--muted)}
+  .gen{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px;width:100%}
+
+  /* ---- Responsive ---- */
+  @media(max-width:860px){
+    .statwall{grid-template-columns:repeat(2,1fr)}
+    .statwall .stat:nth-child(2){border-right:0}
+    .statwall .stat:nth-child(1),.statwall .stat:nth-child(2){border-bottom:1px solid var(--line)}
+    .features{grid-template-columns:1fr}
+    .feature{border-right:0}
+    .gallery{grid-template-columns:repeat(2,1fr)}
+    .pricing{grid-template-columns:1fr}
+    .testimonials{grid-template-columns:1fr}
+    .team{grid-template-columns:1fr}
+    .tmember{border-right:0}
+    .cols{grid-template-columns:repeat(2,1fr)}
+    .form-grid{grid-template-columns:1fr}
+    .ledger-row{grid-template-columns:40px 1fr;gap:14px}
+  }
+  @media(max-width:480px){
+    .gallery{grid-template-columns:1fr}
+    .cols{grid-template-columns:1fr}
+    .statwall{grid-template-columns:1fr}
+    .statwall .stat{border-right:0;border-bottom:1px solid var(--line)}
+    .statwall .stat:last-child{border-bottom:0}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="design4.html" class="wordmark"><span class="dot"></span>Police Bias in 2026</a>
+    <nav class="nav-links">
+      <a href="#the-record">The Record</a>
+      <a href="#evidence">Evidence</a>
+      <a href="design4-tertiary.html">Press</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- BANNER -->
+<div class="banner" data-block="banner">
+  <div class="banner-inner">
+    <span>NEW</span><span>—</span><span>HMICFRS correspondence published in full. <a href="design4-secondary.html">Read the exchange.</a></span>
+  </div>
+</div>
+
+<main>
+
+<!-- HERO -->
+<section class="hero wrap" data-block="hero" id="the-record">
+  <div class="barcode"></div>
+  <div class="kicker">PUBLIC DISCLOSURE — SURREY POLICE</div>
+  <h1>Four failures.<br>One force.</h1>
+  <p class="sub">Police Bias in 2026 publishes the documented record of Surrey Police: its failure to safeguard children, its use of Released Under Investigation, its HMICFRS inspection findings, and one person&rsquo;s unlawful treatment at its hands. Every claim sourced. Every document public.</p>
+  <div class="hero-ctas">
+    <a href="#evidence" class="btn primary">Read the evidence</a>
+    <a href="#contact" class="btn secondary">Press enquiries</a>
+  </div>
+  <div class="statwall">
+    <div class="stat"><div class="num"><span class="acc">4</span></div><div class="lbl">Areas of documented failure</div></div>
+    <div class="stat"><div class="num"><span class="acc">18</span></div><div class="lbl">Months under investigation, no charge</div></div>
+    <div class="stat"><div class="num"><span class="acc">3</span></div><div class="lbl">HMICFRS reports cited</div></div>
+    <div class="stat"><div class="num"><span class="acc">100<span style="font-size:.5em">%</span></span></div><div class="lbl">Of claims sourced to public record</div></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="ledger wrap" data-block="features" id="evidence">
+  <div class="ledger-row">
+    <div class="row-num"><b>001</b></div>
+    <div>
+      <div class="barcode thin"></div>
+      <span class="chip orange">GRADE: REQUIRES IMPROVEMENT</span>
+      <h2 class="sec" style="margin-top:18px">The documented failures</h2>
+      <p class="sec-sub">Three areas where the record shows Surrey Police fell short — each backed by inspection findings, correspondence, or a complaint trail.</p>
+      <div class="features">
+        <div class="feature">
+          <div class="fnum">F-001</div>
+          <h3>Child safeguarding</h3>
+          <p>Referrals that went nowhere. What the documented record shows about how Surrey Police handled child protection concerns.</p>
+        </div>
+        <div class="feature">
+          <div class="fnum">F-002</div>
+          <h3>Released Under Investigation</h3>
+          <p>RUI replaced bail with limbo: no conditions, no time limit, no protection. How Surrey Police use it.</p>
+        </div>
+        <div class="feature">
+          <div class="fnum">F-003</div>
+          <h3>Unlawful treatment</h3>
+          <p>One person&rsquo;s documented experience: unlawful detention, disclosure failures, and a complaint trail the force could not answer.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="ledger wrap" data-block="stats">
+  <div class="ledger-row">
+    <div class="row-num"><b>002</b></div>
+    <div>
+      <div class="barcode thin"></div>
+      <h2 class="sec">By the numbers</h2>
+      <p class="sec-sub">The ledger does not editorialise. These are the figures the documents produce.</p>
+      <div class="statwall" style="margin-top:20px">
+        <div class="stat"><div class="num"><span class="acc">4</span></div><div class="lbl">Areas of documented failure</div></div>
+        <div class="stat"><div class="num"><span class="acc">18</span> <span style="font-size:.4em;color:var(--muted)">mo</span></div><div class="lbl">Under investigation, no charge</div></div>
+        <div class="stat"><div class="num"><span class="acc">3</span></div><div class="lbl">HMICFRS reports cited</div></div>
+        <div class="stat"><div class="num"><span class="acc">100<span style="font-size:.5em">%</span></span></div><div class="lbl">Of claims sourced to public record</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="ledger wrap" data-block="steps">
+  <div class="ledger-row">
+    <div class="row-num"><b>003</b></div>
+    <div>
+      <div class="barcode thin"></div>
+      <h2 class="sec">Method</h2>
+      <p class="sec-sub">How every entry in this ledger was built — and corrected.</p>
+      <div class="features">
+        <div class="feature"><div class="fnum">STEP 01</div><h3>Request</h3><p>FOI and subject access requests filed and logged.</p></div>
+        <div class="feature"><div class="fnum">STEP 02</div><h3>Verify</h3><p>Every claim cross-checked against HMICFRS, IOPC and court records.</p></div>
+        <div class="feature"><div class="fnum">STEP 03</div><h3>Publish</h3><p>Documents published in full, unredacted where law allows.</p></div>
+      </div>
+      <div class="features" style="margin-top:0">
+        <div class="feature" style="border-right:0"><div class="fnum">STEP 04</div><h3>Correct</h3><p>Errors corrected on the record, in public.</p></div>
+        <div class="feature" style="visibility:hidden"></div>
+        <div class="feature" style="visibility:hidden"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS / SOURCES -->
+<section class="ledger wrap" data-block="logos">
+  <div class="ledger-row">
+    <div class="row-num"><b>004</b></div>
+    <div>
+      <div class="barcode thin"></div>
+      <h2 class="sec">Sources cited</h2>
+      <p class="sec-sub">Every figure on this site traces back to one of these bodies.</p>
+      <div class="logos">
+        <span class="logo-chip">HMICFRS</span>
+        <span class="logo-chip">IOPC</span>
+        <span class="logo-chip">College of Policing</span>
+        <span class="logo-chip">Ministry of Justice</span>
+        <span class="logo-chip">ICO</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMAGE -->
+<section class="ledger wrap" data-block="image">
+  <div class="ledger-row">
+    <div class="row-num"><b>005</b></div>
+    <div>
+      <div class="barcode thin"></div>
+      <figure class="figure">
+        <img src="images/window.jpg" alt="A window looking out onto an empty street, representing waiting under investigation">
+        <figcaption>Eighteen months under investigation. Waiting is the punishment.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- TEXT / ABOUT -->
+<section class="ledger wrap" data-block="text">
+  <div class="ledger-row">
+    <div class="row-num"><b>006</b></div>
+    <div>
+      <div class="barcode thin"></div>
+      <span class="chip">ABOUT THIS SITE</span>
+      <h2 class="sec" style="margin-top:18px">The record speaks for itself</h2>
+      <p style="font-size:18px;line-height:1.65;color:var(--text);max-width:760px">Police Bias in 2026 exists because the record speaks for itself. No spin, no anonymity, no axe to grind &mdash; just the documents, the inspection findings and the correspondence, published in one place where the public and the press can read them.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="ledger wrap" data-block="gallery">
+  <div class="ledger-row">
+    <div class="row-num"><b>007</b></div>
+    <div>
+      <div class="barcode thin"></div>
+      <h2 class="sec">The evidence base</h2>
+      <p class="sec-sub">Six frames from the documented record.</p>
+      <div class="gallery">
+        <div class="gcard"><img src="images/documents.jpg" alt="Stack of documents forming the evidence base"><div class="cap">The evidence base</div></div>
+        <div class="gcard"><img src="images/evidence.jpg" alt="Redacted document now published"><div class="cap">Redacted &mdash; until now</div></div>
+        <div class="gcard"><img src="images/playground.jpg" alt="An empty playground representing children the system missed"><div class="cap">The children the system missed</div></div>
+        <div class="gcard"><img src="images/press.jpg" alt="Press microphones and recorders"><div class="cap">The press will ask</div></div>
+        <div class="gcard"><img src="images/courtroom.jpg" alt="An empty courtroom"><div class="cap">Where it ends up</div></div>
+        <div class="gcard"><img src="images/vigil.jpg" alt="A candlelit vigil"><div class="cap">Why it matters</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section class="ledger wrap" data-block="video">
+  <div class="ledger-row">
+    <div class="row-num"><b>008</b></div>
+    <div>
+      <div class="barcode thin"></div>
+      <h2 class="sec">Case overview</h2>
+      <p class="sec-sub">A video walkthrough published with the full launch.</p>
+      <div class="video-poster">
+        <img src="images/hero-hq.jpg" alt="Surrey Police headquarters building, poster frame for the case overview video">
+        <div class="play"></div>
+        <div class="vcap">Case overview &mdash; video published with the full launch.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="ledger wrap" data-block="pricing">
+  <div class="ledger-row">
+    <div class="row-num"><b>009</b></div>
+    <div>
+      <div class="barcode thin"></div>
+      <h2 class="sec">Use this site</h2>
+      <p class="sec-sub">Everything here is free. The record belongs to the public.</p>
+      <div class="pricing">
+        <div class="price-card">
+          <div class="ptag">TIER 01</div>
+          <h3>The Archive</h3>
+          <p class="pdesc">Full public record: every document, every source. Free, always.</p>
+          <div class="pprice">&pound;0 <span>/ free</span></div>
+        </div>
+        <div class="price-card">
+          <div class="ptag">TIER 02</div>
+          <h3>Press Pack</h3>
+          <p class="pdesc">Downloadable evidence bundle for journalists: timelines, documents, contacts.</p>
+          <div class="pprice">&pound;0 <span>/ free</span></div>
+        </div>
+        <div class="price-card">
+          <div class="ptag">TIER 03</div>
+          <h3>Submit Evidence</h3>
+          <p class="pdesc">Confidential channel for your own Surrey Police story.</p>
+          <div class="pprice">&pound;0 <span>/ free</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="ledger wrap" data-block="testimonials">
+  <div class="ledger-row">
+    <div class="row-num"><b>010</b></div>
+    <div>
+      <div class="barcode thin"></div>
+      <h2 class="sec">On the record</h2>
+      <p class="sec-sub">What a newsdesk and a contributor say about the project.</p>
+      <div class="testimonials">
+        <div class="tcard">
+          <div class="tally">|||| ||||</div>
+          <blockquote>Every claim on this site is sourced to a document. That&rsquo;s what makes it useful to us &mdash; and uncomfortable for them.</blockquote>
+          <cite>&mdash; Regional newsdesk editor</cite>
+        </div>
+        <div class="tcard">
+          <div class="tally">|||| ||</div>
+          <blockquote>I went through the same thing. Reading the timeline here was the first time anyone had written it down.</blockquote>
+          <cite>&mdash; Contributor, Guildford</cite>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="ledger wrap" data-block="team">
+  <div class="ledger-row">
+    <div class="row-num"><b>011</b></div>
+    <div>
+      <div class="barcode thin"></div>
+      <h2 class="sec">Who keeps the record</h2>
+      <p class="sec-sub">The people behind the ledger.</p>
+      <div class="team">
+        <div class="tmember">
+          <div class="tid">M-001</div>
+          <h3>Lewis Barclay</h3>
+          <p>Founder. Complainant in the case study; files the requests, keeps the record.</p>
+        </div>
+        <div class="tmember">
+          <div class="tid">M-002</div>
+          <h3>The Verification Desk</h3>
+          <p>Independent researchers who cross-check every published claim.</p>
+        </div>
+        <div class="tmember">
+          <div class="tid">M-003</div>
+          <h3>Legal Support</h3>
+          <p>Counsel advising on publication at every step.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="ledger wrap" data-block="quote">
+  <div class="ledger-row">
+    <div class="row-num"><b>012</b></div>
+    <div>
+      <div class="bigquote">
+        <blockquote>Sunlight is said to be the best of disinfectants.</blockquote>
+        <cite>&mdash; Louis Brandeis</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="ledger wrap" data-block="faq">
+  <div class="ledger-row">
+    <div class="row-num"><b>013</b></div>
+    <div>
+      <div class="barcode thin"></div>
+      <h2 class="sec">Questions, answered</h2>
+      <div class="faq">
+        <div class="faq-item">
+          <div class="fq"><span class="qnum">Q.01</span> Is this legal?</div>
+          <div class="fa">Yes. Publication is protected under Article 10 ECHR, and every document cited is one we are lawfully entitled to publish.</div>
+        </div>
+        <div class="faq-item">
+          <div class="fq"><span class="qnum">Q.02</span> Are the documents real?</div>
+          <div class="fa">Yes &mdash; FOI responses, HMICFRS reports, IOPC correspondence and court records, published in full.</div>
+        </div>
+        <div class="faq-item">
+          <div class="fq"><span class="qnum">Q.03</span> What is RUI?</div>
+          <div class="fa">Released Under Investigation: pre-charge bail&rsquo;s replacement. No conditions, no supervision, often no end date.</div>
+        </div>
+        <div class="faq-item">
+          <div class="fq"><span class="qnum">Q.04</span> Can I help?</div>
+          <div class="fa">Yes. Send your documents through the confidential channel, or tell the press desk this story matters.</div>
+        </div>
+        <div class="faq-item">
+          <div class="fq"><span class="qnum">Q.05</span> Will you take it down if pressured?</div>
+          <div class="fa">Only a court can decide that. Pressure is not a legal argument.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKDOWN / CHRONOLOGY -->
+<section class="ledger wrap" data-block="markdown">
+  <div class="ledger-row">
+    <div class="row-num"><b>014</b></div>
+    <div>
+      <div class="barcode thin"></div>
+      <h2 class="sec">Case chronology</h2>
+      <p class="sec-sub">A ledger of dates &mdash; each entry a line item.</p>
+      <table class="ledger-table">
+        <thead><tr><th>Date</th><th>Entry</th></tr></thead>
+        <tbody>
+          <tr><td>2024-03</td><td>Referral made. No action recorded.</td></tr>
+          <tr><td>2024-06</td><td>RUI imposed. No conditions, no review date.</td></tr>
+          <tr><td>2025-01</td><td>HMICFRS inspection findings published.</td></tr>
+          <tr><td>2025-09</td><td>Complaint closed, unresolved.</td></tr>
+          <tr><td>2026</td><td>The record goes public.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="ledger wrap" data-block="cta">
+  <div class="ledger-row">
+    <div class="row-num"><b>015</b></div>
+    <div>
+      <div class="cta-block">
+        <h2>The record belongs to the public.</h2>
+        <p>Read the evidence, then make up your own mind.</p>
+        <a href="design4-secondary.html" class="btn primary">Start with the timeline</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="ledger wrap" data-block="form" id="contact">
+  <div class="ledger-row">
+    <div class="row-num"><b>016</b></div>
+    <div>
+      <div class="barcode thin"></div>
+      <h2 class="sec">Press &amp; public enquiries</h2>
+      <p class="sec-sub">Send a message to the press desk. We read everything.</p>
+      <form class="form-grid" onsubmit="return false">
+        <div>
+          <label for="f-name">Name</label>
+          <input id="f-name" type="text" placeholder="Your name">
+        </div>
+        <div>
+          <label for="f-email">Email</label>
+          <input id="f-email" type="email" placeholder="you@newsdesk.co.uk">
+        </div>
+        <div class="full">
+          <label for="f-msg">Message</label>
+          <textarea id="f-msg" placeholder="Your enquiry or tip-off"></textarea>
+        </div>
+        <div class="full">
+          <button type="submit" class="btn primary">Send to the press desk</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<hr class="divider" data-block="divider">
+
+<!-- COLUMNS -->
+<section class="wrap" data-block="columns">
+  <div class="cols">
+    <div class="col">
+      <h4>The Record</h4>
+      <ul>
+        <li><a href="design4-secondary.html">About</a></li>
+        <li><a href="#the-record">Timeline</a></li>
+        <li><a href="#evidence">Documents</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Accountability</h4>
+      <ul>
+        <li><a href="#">HMICFRS reports</a></li>
+        <li><a href="#">IOPC</a></li>
+        <li><a href="#">FOI log</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Press</h4>
+      <ul>
+        <li><a href="design4-tertiary.html">Press pack</a></li>
+        <li><a href="#contact">Enquiries</a></li>
+        <li><a href="#">Corrections</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Complaints policy</a></li>
+        <li><a href="#">Sources &amp; methodology</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-inner">
+      <div class="wm"><b>Police Bias in 2026</b> &middot; The Count</div>
+      <div class="foot-meta">Design 4 of 4 &middot; <a href="index.html">All designs</a></div>
+      <div class="gen">Generated with Odokai</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
